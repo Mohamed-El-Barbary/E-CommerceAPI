@@ -49,7 +49,7 @@ public class DataInitializer : IDataInitializer
     private async Task SeedDataFromJsonAsync<T, TEntity>(string fileName, DbSet<T> dbSet) where T : BaseEntity<TEntity>
     {
         // D:\Route Bootcamp Back_End\API\E-CommerceAPI\E-CommerceSolution\E-Commerce.Persistence\Data\DataSeed\JSONFiles\brands.json
-        var filePath = @"..\E-Commerce.Persistence\Data\DataSeed\JSONFiles\brands.json" + fileName;
+        var filePath = @"..\E-Commerce.Persistence\Data\DataSeed\JSONFiles\" + fileName;
 
         if (!File.Exists(filePath))
             throw new FileNotFoundException($"File {fileName} is not Exist");
