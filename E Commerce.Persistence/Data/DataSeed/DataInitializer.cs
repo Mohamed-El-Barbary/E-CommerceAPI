@@ -27,15 +27,15 @@ public class DataInitializer : IDataInitializer
             if (hasProductTypes && hasProductBrands && hasProduct) return;
 
             if (!hasProductBrands)
-                SeedDataFromJson<ProductBrand, int>("brands.json", _dbContext.ProductBrands);
+                await SeedDataFromJsonAsync<ProductBrand, int>("brands.json", _dbContext.ProductBrands);
 
             if (!hasProductTypes)
-                SeedDataFromJson<ProductType, int>("types.json", _dbContext.ProductTypes);
+                await SeedDataFromJsonAsync<ProductType, int>("types.json", _dbContext.ProductTypes);
 
             await _dbContext.SaveChangesAsync();
 
             if (!hasProduct)
-                SeedDataFromJson<Product, int>("products.json", _dbContext.Products);
+                await SeedDataFromJsonAsync<Product, int>("products.json", _dbContext.Products);
 
             await _dbContext.SaveChangesAsync();
         }
@@ -46,7 +46,7 @@ public class DataInitializer : IDataInitializer
         }
     }
 
-    private async Task SeedDataFromJson<T, TEntity>(string fileName, DbSet<T> dbSet) where T : BaseEntity<TEntity>
+    private async Task SeedDataFromJsonAsync<T, TEntity>(string fileName, DbSet<T> dbSet) where T : BaseEntity<TEntity>
     {
         // D:\Route Bootcamp Back_End\API\E-CommerceAPI\E-CommerceSolution\E Commerce.Persistence\Data\DataSeed\JSONFiles\brands.json
         var filePath = @"..\E Commerce.Persistence\Data\DataSeed\JSONFiles\brands.json" + fileName;
