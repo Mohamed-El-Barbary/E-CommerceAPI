@@ -16,13 +16,13 @@ public class DataInitializer : IDataInitializer
         _dbContext = dbContext;
     }
 
-    public void Initialize()
+    public async Task InitializeAsync()
     {
         try
         {
-            var hasProduct = _dbContext.Products.Any();
-            var hasProductBrands = _dbContext.ProductBrands.Any();
-            var hasProductTypes = _dbContext.ProductTypes.Any();
+            var hasProduct = await _dbContext.Products.AnyAsync();
+            var hasProductBrands = await _dbContext.ProductBrands.AnyAsync();
+            var hasProductTypes = await _dbContext.ProductTypes.AnyAsync();
 
             if (hasProductTypes && hasProductBrands && hasProduct) return;
 
@@ -31,11 +31,13 @@ public class DataInitializer : IDataInitializer
 
             if (!hasProductTypes)
                 SeedDataFromJson<ProductType, int>("types.json", _dbContext.ProductTypes);
-            
-            _dbContext.SaveChanges();
+
+            await _dbContext.SaveChangesAsync();
+
             if (!hasProduct)
                 SeedDataFromJson<Product, int>("products.json", _dbContext.Products);
 
+            await _dbContext.SaveChangesAsync();
         }
         catch (Exception e)
         {
@@ -44,24 +46,24 @@ public class DataInitializer : IDataInitializer
         }
     }
 
-    private void SeedDataFromJson<T, TEntity>(string fileName, DbSet<T> dbSet) where T : BaseEntity<TEntity>
+    private async Task SeedDataFromJson<T, TEntity>(string fileName, DbSet<T> dbSet) where T : BaseEntity<TEntity>
     {
         // D:\Route Bootcamp Back_End\API\E-CommerceAPI\E-CommerceSolution\E Commerce.Persistence\Data\DataSeed\JSONFiles\brands.json
         var filePath = @"..\E Commerce.Persistence\Data\DataSeed\JSONFiles\brands.json" + fileName;
 
-        if (!File.Exists(filePath)) 
+        if (!File.Exists(filePath))
             throw new FileNotFoundException($"File {fileName} is not Exist");
-        
+
         try
         {
             using var dataStream = File.OpenRead(filePath);
-            var data = JsonSerializer.Deserialize<T>(dataStream, new JsonSerializerOptions()
+            var data = await JsonSerializer.DeserializeAsync<T>(dataStream, new JsonSerializerOptions()
             {
                 PropertyNameCaseInsensitive = true
             });
-            
+
             if (data is not null)
-                dbSet.AddRange(data);
+                await dbSet.AddRangeAsync(data);
         }
         catch (Exception e)
         {

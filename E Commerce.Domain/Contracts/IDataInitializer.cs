@@ -2,5 +2,5 @@
 
 public interface IDataInitializer
 {
-    void Initialize();
+    Task InitializeAsync();
 }
