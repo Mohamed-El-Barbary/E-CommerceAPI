@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace E_Commerce.Persistence.Repositories;
 
-public class UnitOfWork: IUnitOfWork
+public class UnitOfWork : IUnitOfWork
 {
     private readonly StoreDbContext _dbContext;
     private readonly Dictionary<Type, object> _repositories = [];
@@ -24,9 +24,9 @@ public class UnitOfWork: IUnitOfWork
         if (_repositories.TryGetValue(entityType, out object? repository))
             return (IGenericRepository<TEntity, TKey>)repository;
 
-        var newRepo = new GenericRepository<TEntity , TKey>(_dbContext);
-        
-        _repositories[entityType] =  newRepo;
+        var newRepo = new GenericRepository<TEntity, TKey>(_dbContext);
+
+        _repositories[entityType] = newRepo;
         return newRepo;
     }
 }
