@@ -57,7 +57,7 @@ public class DataInitializer : IDataInitializer
         try
         {
             using var dataStream = File.OpenRead(filePath);
-            var data = await JsonSerializer.DeserializeAsync<T>(dataStream, new JsonSerializerOptions()
+            var data = await JsonSerializer.DeserializeAsync<List<T>>(dataStream, new JsonSerializerOptions()
             {
                 PropertyNameCaseInsensitive = true
             });
