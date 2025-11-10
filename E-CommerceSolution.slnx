@@ -1,7 +1,7 @@
 <Solution>
   <Folder Name="/ApplicationCoreLayer/">
     <Project Path="E-Commerce.Domain\E-Commerce.Domain.csproj" />
-    <Project Path="E-Commerce.Services Abstraction\E-Commerce.Services Abstraction.csproj" />
+    <Project Path="E-Commerce.ServicesAbstraction\E-Commerce.ServicesAbstraction.csproj" />
     <Project Path="E-Commerce.Services\E-Commerce.Services.csproj" />
   </Folder>
   <Folder Name="/InfrastructureLayer/">
