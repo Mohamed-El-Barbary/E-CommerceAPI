@@ -1,4 +1,5 @@
 ﻿using E_Commerce.Domain.Entities.ProductModule;
+using E_Commerce.Shared;
 
 namespace E_Commerce.Services.Specifications;
 
@@ -11,9 +12,10 @@ internal class ProductWithTypeAndBrandSpecification : BaseSpecifications<Product
         AddInclude(p => p.ProductType);
     }
     
-    public ProductWithTypeAndBrandSpecification(int? brandId, int? typeId) : 
-        base(p=> (!brandId.HasValue || p.BrandId == brandId.Value)
-        && (!typeId.HasValue || p.TypeId == typeId.Value))
+    public ProductWithTypeAndBrandSpecification(ProductQueryparams  queryparams) : 
+        base(p=> (!queryparams.BrandId.HasValue || p.BrandId == queryparams.BrandId.Value)
+        && (!queryparams.TypeId.HasValue || p.TypeId == queryparams.TypeId.Value)
+        && (string.IsNullOrEmpty(queryparams.Search) || p.Name.ToLower().Contains(queryparams.Search.ToLower()) ))
     {
         AddInclude(p => p.ProductBrand);
         AddInclude(p => p.ProductType);
