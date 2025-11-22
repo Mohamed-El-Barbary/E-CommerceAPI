@@ -23,4 +23,9 @@ public class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey
     public void Update(TEntity entity) => _dbContext.Set<TEntity>().Update(entity);
 
     public void Delete(TEntity entity) => _dbContext.Set<TEntity>().Remove(entity);
+    public async Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity, TKey> specifications)
+    {
+        var query =  SpecificationsEvaluater.CreateQuery(_dbContext.Set<TEntity>(), specifications);
+        return await query.ToListAsync();
+    }
 }
