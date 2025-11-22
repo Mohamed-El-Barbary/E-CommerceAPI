@@ -14,6 +14,12 @@ internal static class SpecificationsEvaluater
 
         if (specifications is not null)
         {
+
+            if (specifications.Criteria is not null)
+            {
+                query = query.Where(specifications.Criteria);
+            }
+            
             if (specifications.IncludeExpressions is not null && specifications.IncludeExpressions.Any())
             {
                 query = specifications.IncludeExpressions.Aggregate(

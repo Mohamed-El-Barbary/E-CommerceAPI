@@ -27,7 +27,8 @@ public class ProductService : IProductService
 
     public async Task<ProductDTO> GetProductByIdAsync(int productId)
     {
-        var product = await _unitOfWork.GetRepository<Product, int>().GetByIdAsync(productId);
+        var spec = new ProductWithTypeAndBrandSpecification(productId);
+        var product = await _unitOfWork.GetRepository<Product, int>().GetByIdAsync(spec);
         return _mapper.Map<ProductDTO>(product);
     }
 
