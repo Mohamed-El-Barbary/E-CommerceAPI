@@ -18,9 +18,9 @@ public class ProductService : IProductService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<ProductDTO>> GetAllProductsAsync()
+    public async Task<IEnumerable<ProductDTO>> GetAllProductsAsync(int? brandId, int? typesId)
     {
-        var spec = new ProductWithTypeAndBrandSpecification();
+        var spec = new ProductWithTypeAndBrandSpecification(brandId,typesId);
         var products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(spec);
         return _mapper.Map<IEnumerable<ProductDTO>>(products);
     }

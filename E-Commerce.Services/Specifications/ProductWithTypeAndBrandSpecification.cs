@@ -11,7 +11,9 @@ internal class ProductWithTypeAndBrandSpecification : BaseSpecifications<Product
         AddInclude(p => p.ProductType);
     }
     
-    public ProductWithTypeAndBrandSpecification() : base(null)
+    public ProductWithTypeAndBrandSpecification(int? brandId, int? typeId) : 
+        base(p=> (!brandId.HasValue || p.BrandId == brandId.Value)
+        && (!typeId.HasValue || p.TypeId == typeId.Value))
     {
         AddInclude(p => p.ProductBrand);
         AddInclude(p => p.ProductType);

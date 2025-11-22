@@ -4,7 +4,7 @@ namespace E_Commerce.Services_Abstraction;
 
 public interface IProductService
 {
-    Task<IEnumerable<ProductDTO>> GetAllProductsAsync();
+    Task<IEnumerable<ProductDTO>> GetAllProductsAsync(int? brandId, int? typeId);
     
     Task<ProductDTO> GetProductByIdAsync(int productId);
     
