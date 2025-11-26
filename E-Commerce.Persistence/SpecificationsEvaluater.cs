@@ -27,6 +27,22 @@ internal static class SpecificationsEvaluater
                     (currentQuery, IncludeExp)
                         => currentQuery.Include(IncludeExp));
             }
+
+            if (specifications.OrderBy is not null)
+            {
+                query = query.OrderBy(specifications.OrderBy);
+            }
+
+            if (specifications.OrderByDescending is not null)
+            {
+                query = query.OrderByDescending(specifications.OrderByDescending);
+            }
+
+            if (specifications.IsPaginated)
+            {
+                query = query.Skip(specifications.Skip).Take(specifications.Take);
+            }
+            
         }
 
         return query;
