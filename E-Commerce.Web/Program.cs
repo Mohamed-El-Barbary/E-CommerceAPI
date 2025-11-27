@@ -28,8 +28,8 @@ namespace E_Commerce.Web
             });
             builder.Services.AddScoped<IDataInitializer, DataInitializer>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddAutoMapper(x => x.AddProfile<ProductProfile>());
             builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddAutoMapper(typeof(ProductProfile).Assembly);
 
             #endregion
 
@@ -51,7 +51,8 @@ namespace E_Commerce.Web
             }
 
             app.UseHttpsRedirection();
-
+            
+            app.UseStaticFiles();
             app.UseAuthorization();
 
             app.MapControllers();
