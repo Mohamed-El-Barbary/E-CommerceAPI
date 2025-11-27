@@ -32,4 +32,10 @@ public class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey
         var query =  SpecificationsEvaluater.CreateQuery(_dbContext.Set<TEntity>(), specifications);
         return await query.ToListAsync();
     }
+
+    public async Task<int> CountAsync(ISpecifications<TEntity, TKey> specifications)
+    {
+        return await SpecificationsEvaluater.CreateQuery(_dbContext.Set<TEntity>(), specifications)
+                                            .CountAsync();
+    }
 }

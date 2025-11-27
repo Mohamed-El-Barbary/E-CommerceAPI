@@ -39,5 +39,8 @@ internal class ProductWithTypeAndBrandSpecification : BaseSpecifications<Product
                 AddOrderBy(orderByExp: x => x.Id);
                 break;
         }
-    }
+        
+        ApplyPagination(queryParams.PageSize, queryParams.PageIndex);
+        
+    }           
 }

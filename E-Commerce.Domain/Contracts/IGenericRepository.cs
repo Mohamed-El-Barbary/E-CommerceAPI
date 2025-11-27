@@ -16,4 +16,6 @@ public interface IGenericRepository<TEntity, TKey> where TEntity : BaseEntity<TK
     void Delete(TEntity entity);
     
     Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity,  TKey> specifications);
+    
+    Task<int> CountAsync(ISpecifications<TEntity, TKey> specifications);
 }
