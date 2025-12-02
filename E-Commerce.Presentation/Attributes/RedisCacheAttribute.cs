@@ -44,7 +44,7 @@ internal class RedisCacheAttribute : ActionFilterAttribute
 
         if (executedContext.Result is ObjectResult objectResult)
         {
-            cacheService.SetAsync(cacheKey , objectResult.Value!, TimeSpan.FromMinutes(_durationInMinutes));
+           await cacheService.SetAsync(cacheKey , objectResult.Value!, TimeSpan.FromMinutes(_durationInMinutes));
         }
         
     }
