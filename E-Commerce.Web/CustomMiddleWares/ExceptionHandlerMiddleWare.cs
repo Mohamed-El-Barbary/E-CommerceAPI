@@ -19,6 +19,19 @@ public class ExceptionHandlerMiddleWare
         try
         {
             await _next.Invoke(httpContext);
+
+            if (httpContext.Response.StatusCode == StatusCodes.Status404NotFound)
+            {
+                var responseBody = new ProblemDetails()
+                {
+                    Title = "Error While Processing HTTP Request, EndPoint Not Found",
+                    Detail = $"Endpoint {httpContext.Request.Path} Not Found",
+                    Status = StatusCodes.Status404NotFound,
+                    Instance = httpContext.Request.Path
+                };
+                await httpContext.Response.WriteAsJsonAsync(responseBody);
+            }
+            
         }
         catch (Exception ex)
         {
