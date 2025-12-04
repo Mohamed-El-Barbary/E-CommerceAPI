@@ -27,7 +27,7 @@ public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IProductSe
         var spec = new ProductWithTypeAndBrandSpecification(productId);
         var product = await unitOfWork.GetRepository<Product, int>().GetByIdAsync(spec);
         if (product is null)
-            throw new ProductNotFoundExceptions(productId);
+            throw new ProductNotFoundException(productId);
         return mapper.Map<ProductDTO>(product);
     }
 

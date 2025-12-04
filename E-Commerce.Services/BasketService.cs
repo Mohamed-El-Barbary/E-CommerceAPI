@@ -22,7 +22,7 @@ public class BasketService : IBasketService
     {
         var basket = await _basketRepository.GetBasketAsync(basketId);
         if (basket is null)
-            throw new BasketNotFoundExceptions(basketId);
+            throw new BasketNotFoundException(basketId);
         return _mapper.Map<CustomerBasket,BasketDTO>(basket!);
     }
 
