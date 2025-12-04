@@ -5,6 +5,7 @@ using E_Commerce.Persistence.Repositories;
 using E_Commerce.Services_Abstraction;
 using E_Commerce.Services;
 using E_Commerce.Services.MappingProfiles;
+using E_Commerce.Web.CustomMiddleWares;
 using E_Commerce.Web.Extenions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
@@ -54,7 +55,7 @@ namespace E_Commerce.Web
 
             #region Configure the HTTP request pipeline
 
-            app.UseMiddleware<ExceptionHandlerMiddleware>();
+            app.UseMiddleware<ExceptionHandlerMiddleWare>();
             
             if (app.Environment.IsDevelopment())
             {
