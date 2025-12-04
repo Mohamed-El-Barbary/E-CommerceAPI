@@ -7,7 +7,9 @@ using E_Commerce.Services;
 using E_Commerce.Services.MappingProfiles;
 using E_Commerce.Web.CustomMiddleWares;
 using E_Commerce.Web.Extenions;
+using E_Commerce.Web.Factories;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
@@ -40,6 +42,10 @@ namespace E_Commerce.Web
             builder.Services.AddSingleton<IConnectionMultiplexer>(SP =>
             {
                 return ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisConnection")!);
+            });
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = ApiResponseFactory.GenerateApiValidationResponse;
             });
 
             #endregion
