@@ -1,6 +1,7 @@
 using E_Commerce.Domain.Contracts;
 using E_Commerce.Persistence.Data.DataSeed;
 using E_Commerce.Persistence.Data.DbContexts;
+using E_Commerce.Persistence.IdentityData.DbContexts;
 using E_Commerce.Persistence.Repositories;
 using E_Commerce.Services_Abstraction;
 using E_Commerce.Services;
@@ -9,6 +10,7 @@ using E_Commerce.Web.CustomMiddleWares;
 using E_Commerce.Web.Extenions;
 using E_Commerce.Web.Factories;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -31,6 +33,10 @@ namespace E_Commerce.Web
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            builder.Services.AddDbContext<StoreIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
+            });
             builder.Services.AddScoped<IDataInitializer, DataInitializer>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IProductService, ProductService>();
@@ -47,7 +53,7 @@ namespace E_Commerce.Web
             {
                 options.InvalidModelStateResponseFactory = ApiResponseFactory.GenerateApiValidationResponse;
             });
-
+            
             #endregion
 
             var app = builder.Build();
@@ -55,6 +61,7 @@ namespace E_Commerce.Web
             #region DataSeeding
 
             await app.MigrateDatabaseAsync();
+            await app.MigrateIdentityDatabaseAsync();
             await app.SeedDatabaseAsync();
 
             #endregion
