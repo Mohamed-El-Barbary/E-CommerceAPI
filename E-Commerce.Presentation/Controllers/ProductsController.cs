@@ -27,8 +27,8 @@ public class ProductsController : ApiBaseController
     [HttpGet("{id}")]
     public async Task<ActionResult<ProductDTO>> GetProduct(int id)
     {
-        var product = await _productService.GetProductByIdAsync(id);
-        return Ok(product);
+        var result = await _productService.GetProductByIdAsync(id);
+        return HandleResult<ProductDTO>(result);
     }
 
     [HttpGet("brands")]
