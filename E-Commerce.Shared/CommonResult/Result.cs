@@ -51,4 +51,8 @@ public class Result<TValue> : Result
     public static Result<TValue> Ok(TValue value) => new(value);
     public static new Result<TValue> Fail(Error error) => new(error);
     public static new Result<TValue> Fail(List<Error> error) => new(error);
+    
+    public static implicit operator Result<TValue>(TValue value) => Ok(value);
+    public static implicit operator Result<TValue>(Error error) => Fail(error);
+    public static implicit operator Result<TValue>(List<Error> errors) => Fail(errors);
 }
