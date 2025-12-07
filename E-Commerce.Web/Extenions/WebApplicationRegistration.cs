@@ -30,7 +30,14 @@ public static class WebApplicationRegistration
     public static async Task<WebApplication> SeedDatabaseAsync(this WebApplication app)
     {
         await using var scope = app.Services.CreateAsyncScope();
-        var dataInitializerService = scope.ServiceProvider.GetRequiredService<IDataInitializer>();
+        var dataInitializerService = scope.ServiceProvider.GetRequiredKeyedService<IDataInitializer>("Default");
+        await dataInitializerService.InitializeAsync();
+        return app;
+    }    
+    public static async Task<WebApplication> SeedIdentityDatabaseAsync(this WebApplication app)
+    {
+        await using var scope = app.Services.CreateAsyncScope();
+        var dataInitializerService = scope.ServiceProvider.GetRequiredKeyedService<IDataInitializer>("Identity");
         await dataInitializerService.InitializeAsync();
         return app;
     }

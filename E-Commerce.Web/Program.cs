@@ -1,6 +1,8 @@
 using E_Commerce.Domain.Contracts;
+using E_Commerce.Domain.Entities.IdentityModule;
 using E_Commerce.Persistence.Data.DataSeed;
 using E_Commerce.Persistence.Data.DbContexts;
+using E_Commerce.Persistence.IdentityData.DataSeed;
 using E_Commerce.Persistence.IdentityData.DbContexts;
 using E_Commerce.Persistence.Repositories;
 using E_Commerce.Services_Abstraction;
@@ -10,6 +12,7 @@ using E_Commerce.Web.CustomMiddleWares;
 using E_Commerce.Web.Extenions;
 using E_Commerce.Web.Factories;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -37,7 +40,8 @@ namespace E_Commerce.Web
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
             });
-            builder.Services.AddScoped<IDataInitializer, DataInitializer>();
+            builder.Services.AddKeyedScoped<IDataInitializer, DataInitializer>("Default");
+            builder.Services.AddKeyedScoped<IDataInitializer, IdentityDataInitializer>("Identity");
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IBasketRepository, BasketRepository>();
@@ -53,6 +57,9 @@ namespace E_Commerce.Web
             {
                 options.InvalidModelStateResponseFactory = ApiResponseFactory.GenerateApiValidationResponse;
             });
+            builder.Services.AddIdentityCore<ApplicationUser>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<StoreIdentityDbContext>();
             
             #endregion
 
@@ -63,6 +70,7 @@ namespace E_Commerce.Web
             await app.MigrateDatabaseAsync();
             await app.MigrateIdentityDatabaseAsync();
             await app.SeedDatabaseAsync();
+            await app.SeedIdentityDatabaseAsync();
 
             #endregion
 
