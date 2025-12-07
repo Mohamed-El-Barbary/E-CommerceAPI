@@ -1,3 +1,4 @@
+using System.Text;
 using E_Commerce.Domain.Contracts;
 using E_Commerce.Domain.Entities.IdentityModule;
 using E_Commerce.Persistence.Data.DataSeed;
@@ -11,11 +12,13 @@ using E_Commerce.Services.MappingProfiles;
 using E_Commerce.Web.CustomMiddleWares;
 using E_Commerce.Web.Extenions;
 using E_Commerce.Web.Factories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 
 namespace E_Commerce.Web
@@ -61,6 +64,25 @@ namespace E_Commerce.Web
             builder.Services.AddIdentityCore<ApplicationUser>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<StoreIdentityDbContext>();
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = builder.Configuration["JWTOptions:Issuer"],
+                    ValidAudience = builder.Configuration["JWTOptions:Audience"],
+                    IssuerSigningKey =
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTOptions:SecretKey"]))
+                };
+            });
             
             #endregion
 
@@ -88,6 +110,7 @@ namespace E_Commerce.Web
             app.UseHttpsRedirection();
             
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
