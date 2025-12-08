@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using E_Commerce.Domain.Contracts;
 using E_Commerce.Domain.Entities;
+using E_Commerce.Domain.Entities.OrderModule;
 using E_Commerce.Domain.Entities.ProductModule;
 using E_Commerce.Persistence.Data.DbContexts;
 using Microsoft.EntityFrameworkCore;
@@ -23,8 +24,9 @@ public class DataInitializer : IDataInitializer
             var hasProduct = await _dbContext.Products.AnyAsync();
             var hasProductBrands = await _dbContext.ProductBrands.AnyAsync();
             var hasProductTypes = await _dbContext.ProductTypes.AnyAsync();
+            var hasDeliverMethod = await _dbContext.Set<DeliveryMethod>().AnyAsync();
 
-            if (hasProductTypes && hasProductBrands && hasProduct) return;
+            if (hasProductTypes && hasProductBrands && hasProduct && hasDeliverMethod) return;
 
             if (!hasProductBrands)
                 await SeedDataFromJsonAsync<ProductBrand, int>("brands.json", _dbContext.ProductBrands);
@@ -36,6 +38,9 @@ public class DataInitializer : IDataInitializer
 
             if (!hasProduct)
                 await SeedDataFromJsonAsync<Product, int>("products.json", _dbContext.Products);
+
+            if (!hasDeliverMethod)
+                await SeedDataFromJsonAsync<DeliveryMethod, int>("delivery.json", _dbContext.Set<DeliveryMethod>());
 
             await _dbContext.SaveChangesAsync();
         }
