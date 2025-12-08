@@ -57,6 +57,21 @@ public class AuthenticationService : IAuthenticationService
         return identityResult.Errors.Select(e => Error.Validation(e.Code, e.Description)).ToList();
     }
 
+    public async Task<bool> CheckEmailAsync(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        return user != null;
+    }
+
+    public async Task<Result<UserDTO>> GetUserByEmailAsync(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user is null)
+            return Error.NotFound("User.NotFound" ,$"No User with Email {email} Was Found");
+        
+        return new UserDTO(user.Email!, user.DisplayName, await CreateTokenAsync(user));
+    }
+
     private async Task<string> CreateTokenAsync(ApplicationUser user)
     {
         // Token [Issuer, Audience, Claims, Expires, SigningCredentials]
