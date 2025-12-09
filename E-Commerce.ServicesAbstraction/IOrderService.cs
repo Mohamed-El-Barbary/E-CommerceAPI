@@ -11,4 +11,10 @@ public interface IOrderService
     
     // Get Delivery Methods
     Task<Result<IEnumerable<DeliveryMethodDTO>>> GetAllDeliverMothodsAsync();
+    
+    // Get All Order For Specific User By Mail 
+    Task<Result<IEnumerable<OrderToReturnDTO>>> GetAllOrdersAsync(string email);
+    
+    // Get Specific Order For Specific User By Id and Email
+    Task<Result<OrderToReturnDTO>> GetOrderByIdAsync(Guid id, string email);
 }

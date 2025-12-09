@@ -4,6 +4,7 @@ using E_Commerce.Domain.Entities.BasketModule;
 using E_Commerce.Domain.Entities.OrderModule;
 using E_Commerce.Domain.Entities.ProductModule;
 using E_Commerce.Services_Abstraction;
+using E_Commerce.Services.Specifications;
 using E_Commerce.Shared.CommonResult;
 using E_Commerce.Shared.DTOs.OrderDTOs;
 
@@ -39,7 +40,8 @@ public class OrderService : IOrderService
             orderItems.Add(CreateOrderItem(product, item));
         }
 
-        var deliveryMethod = await _unitOfWork.GetRepository<DeliveryMethod, int>().GetByIdAsync(orderDto.DeliveryMethodId);
+        var deliveryMethod =
+            await _unitOfWork.GetRepository<DeliveryMethod, int>().GetByIdAsync(orderDto.DeliveryMethodId);
         if (deliveryMethod is null)
             return Error.NotFound("DeliverMethod.NotFound",
                 $"The Deliver Method With Id {orderDto.DeliveryMethodId} Is Not Found");
@@ -65,15 +67,39 @@ public class OrderService : IOrderService
     public async Task<Result<IEnumerable<DeliveryMethodDTO>>> GetAllDeliverMothodsAsync()
     {
         var deliveryMethod = await _unitOfWork.GetRepository<DeliveryMethod, int>().GetAllAsync();
-        
+
         if (!deliveryMethod.Any())
             return Error.NotFound("DeliveryMethod.NotFound", "No Delivery Method Found");
-        
+
         var mappedDeliveryMethod = _mapper.Map<IEnumerable<DeliveryMethodDTO>>(deliveryMethod);
         if (mappedDeliveryMethod is null)
             return Error.NotFound("DeliveryMethod.NotFound", "No Delivery Method Found");
-        
+
         return Result<IEnumerable<DeliveryMethodDTO>>.Ok(mappedDeliveryMethod);
+    }
+
+    public async Task<Result<IEnumerable<OrderToReturnDTO>>> GetAllOrdersAsync(string email)
+    {
+        var orderSpec = new OrderSpecification(email);
+        var orders = await _unitOfWork.GetRepository<Order, Guid>().GetAllAsync(orderSpec);
+
+        if (!orders.Any())
+            return Error.NotFound("Order.NotFound", $"No Orders Found For The User With Email : {email}");
+
+        var mappedOrders = _mapper.Map<IEnumerable<OrderToReturnDTO>>(orders);
+        return Result<IEnumerable<OrderToReturnDTO>>.Ok(mappedOrders);
+    }
+
+    public async Task<Result<OrderToReturnDTO>> GetOrderByIdAsync(Guid id, string email)
+    {
+        var orderSpec = new OrderSpecification(id, email);
+
+        var order = await _unitOfWork.GetRepository<Order, Guid>().GetByIdAsync(orderSpec);
+        if (order is null)
+            return Error.NotFound("Order.NotFound", $"No Orders Found With Id : {id}, For The User With Email : {email}");
+        
+        var mappedOrder = _mapper.Map<OrderToReturnDTO>(order);
+        return Result<OrderToReturnDTO>.Ok(mappedOrder);
     }
 
     private static OrderItem CreateOrderItem(Product product, BasketItem item)
