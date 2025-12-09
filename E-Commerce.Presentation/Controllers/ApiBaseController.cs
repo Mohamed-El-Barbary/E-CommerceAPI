@@ -1,4 +1,5 @@
-﻿using E_Commerce.Shared.CommonResult;
+﻿using System.Security.Claims;
+using E_Commerce.Shared.CommonResult;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -26,6 +27,8 @@ public class ApiBaseController : ControllerBase
             return HandleProblem(result.Errors);
     }
 
+    protected string GetEmailFromToken() => User.FindFirstValue(ClaimTypes.Email)!;
+    
     private ActionResult HandleProblem(IReadOnlyList<Error> errors)
     {
         // If No Errors Are Provided , Return 500 Error
