@@ -4,7 +4,7 @@
         Guid Id,
         string UserEmail,
         ICollection<OrderItemDTO> Items,
-        AddressDTO ShippingAddress,
+        AddressDTO Address,
         string DeliveryMethod,
         string OrderStatus,
         DateTimeOffset OrderDate,
