@@ -62,6 +62,20 @@ public class OrderService : IOrderService
         return _mapper.Map<OrderToReturnDTO>(order);
     }
 
+    public async Task<Result<IEnumerable<DeliveryMethodDTO>>> GetAllDeliverMothodsAsync()
+    {
+        var deliveryMethod = await _unitOfWork.GetRepository<DeliveryMethod, int>().GetAllAsync();
+        
+        if (!deliveryMethod.Any())
+            return Error.NotFound("DeliveryMethod.NotFound", "No Delivery Method Found");
+        
+        var mappedDeliveryMethod = _mapper.Map<IEnumerable<DeliveryMethodDTO>>(deliveryMethod);
+        if (mappedDeliveryMethod is null)
+            return Error.NotFound("DeliveryMethod.NotFound", "No Delivery Method Found");
+        
+        return Result<IEnumerable<DeliveryMethodDTO>>.Ok(mappedDeliveryMethod);
+    }
+
     private static OrderItem CreateOrderItem(Product product, BasketItem item)
     {
         return new OrderItem()
