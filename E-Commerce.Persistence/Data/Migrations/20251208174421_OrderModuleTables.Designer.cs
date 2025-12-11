@@ -4,6 +4,7 @@ using E_Commerce.Persistence.Data.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Commerce.Persistence.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    partial class StoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251208174421_OrderModuleTables")]
+    partial class OrderModuleTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,17 +142,12 @@ namespace E_Commerce.Persistence.Data.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ProductSubTypeId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
-
-                    b.HasIndex("ProductSubTypeId");
 
                     b.HasIndex("TypeId");
 
@@ -172,29 +170,6 @@ namespace E_Commerce.Persistence.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductBrands");
-                });
-
-            modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductSubType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("ProductTypeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductTypeId");
-
-                    b.ToTable("ProductSubType");
                 });
 
             modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductType", b =>
@@ -311,12 +286,6 @@ namespace E_Commerce.Persistence.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("E_Commerce.Domain.Entities.ProductModule.ProductSubType", "ProductSubType")
-                        .WithMany()
-                        .HasForeignKey("ProductSubTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("E_Commerce.Domain.Entities.ProductModule.ProductType", "ProductType")
                         .WithMany()
                         .HasForeignKey("TypeId")
@@ -325,30 +294,12 @@ namespace E_Commerce.Persistence.Data.Migrations
 
                     b.Navigation("ProductBrand");
 
-                    b.Navigation("ProductSubType");
-
                     b.Navigation("ProductType");
-                });
-
-            modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductSubType", b =>
-                {
-                    b.HasOne("E_Commerce.Domain.Entities.ProductModule.ProductType", "productType")
-                        .WithMany("productSubTypes")
-                        .HasForeignKey("ProductTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("productType");
                 });
 
             modelBuilder.Entity("E_Commerce.Domain.Entities.OrderModule.Order", b =>
                 {
                     b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductType", b =>
-                {
-                    b.Navigation("productSubTypes");
                 });
 #pragma warning restore 612, 618
         }

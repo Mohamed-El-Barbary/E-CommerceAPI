@@ -4,6 +4,7 @@ using E_Commerce.Persistence.Data.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Commerce.Persistence.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    partial class StoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251211014503_AddProductSubTypeTable")]
+    partial class AddProductSubTypeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -187,12 +190,12 @@ namespace E_Commerce.Persistence.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("ProductTypeId")
+                    b.Property<int>("productTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductTypeId");
+                    b.HasIndex("productTypeId");
 
                     b.ToTable("ProductSubType");
                 });
@@ -334,7 +337,7 @@ namespace E_Commerce.Persistence.Data.Migrations
                 {
                     b.HasOne("E_Commerce.Domain.Entities.ProductModule.ProductType", "productType")
                         .WithMany("productSubTypes")
-                        .HasForeignKey("ProductTypeId")
+                        .HasForeignKey("productTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

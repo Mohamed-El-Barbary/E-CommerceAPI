@@ -18,4 +18,13 @@ namespace E_Commerce.Persistence.Data.Configurations
                 .HasMaxLength(100);
         }
     }
+    public class ProductSubTypeConfiguration : IEntityTypeConfiguration<ProductSubType>
+    {
+        public void Configure(EntityTypeBuilder<ProductSubType> builder)
+        {
+
+            builder.Property(x => x.Name)
+                .HasMaxLength(100);
+        }
+    }
 }

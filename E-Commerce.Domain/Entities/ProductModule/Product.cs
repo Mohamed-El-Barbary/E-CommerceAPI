@@ -21,6 +21,9 @@ namespace E_Commerce.Domain.Entities.ProductModule
         public int TypeId { get; set; }
         public ProductType ProductType { get; set; } = default!;
 
+        public int ProductSubTypeId { get; set; }
+        public ProductSubType ProductSubType { get; set; } = default!;
+
         #endregion
     }
 }

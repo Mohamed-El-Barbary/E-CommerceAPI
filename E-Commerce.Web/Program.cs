@@ -52,6 +52,7 @@ namespace E_Commerce.Web
             builder.Services.AddScoped<ICacheRepository, CacheRepository>();
             builder.Services.AddScoped<ICacheService, CacheService>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddAutoMapper(typeof(ProductProfile).Assembly);
             builder.Services.AddSingleton<IConnectionMultiplexer>(SP =>
             {
