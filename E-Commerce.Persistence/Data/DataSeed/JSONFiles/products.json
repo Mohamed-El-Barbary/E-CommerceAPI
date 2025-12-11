@@ -5,7 +5,8 @@
     "Price": 120,
     "PictureUrl": "images/products/ClassicWhiteTShirt.jpeg",
     "TypeId": 1,
-    "BrandId": 1
+    "BrandId": 1,
+    "ProductSubTypeId": 1
   },
   {
     "Name": "Slim Fit Jeans",
@@ -13,7 +14,8 @@
     "Price": 350,
     "PictureUrl": "images/products/SlimFitJeans.jpg",
     "TypeId": 2,
-    "BrandId": 2
+    "BrandId": 2,
+    "ProductSubTypeId": 5
   },
   {
     "Name": "Denim Jacket",
@@ -21,7 +23,8 @@
     "Price": 500,
     "PictureUrl": "images/products/DenimJacket.jpg",
     "TypeId": 3,
-    "BrandId": 2
+    "BrandId": 2,
+    "ProductSubTypeId": 9
   },
   {
     "Name": "Cotton Hoodie",
@@ -29,7 +32,8 @@
     "Price": 400,
     "PictureUrl": "images/products/CottonHoodie.jpg",
     "TypeId": 1,
-    "BrandId": 3
+    "BrandId": 3,
+    "ProductSubTypeId": 4
   },
   {
     "Name": "Formal Blazer",
@@ -37,7 +41,8 @@
     "Price": 850,
     "PictureUrl": "images/products/FormalBlazer.jpg",
     "TypeId": 3,
-    "BrandId": 4
+    "BrandId": 4,
+    "ProductSubTypeId": 12
   },
   {
     "Name": "Summer Floral Dress",
@@ -45,7 +50,8 @@
     "Price": 450,
     "PictureUrl": "images/products/SummerFloralDress.jpg",
     "TypeId": 3,
-    "BrandId": 5
+    "BrandId": 5,
+    "ProductSubTypeId": 11
   },
   {
     "Name": "Men's Leather Jacket",
@@ -53,7 +59,8 @@
     "Price": 1200,
     "PictureUrl": "images/products/MensLeatherJacket.jpg",
     "TypeId": 3,
-    "BrandId": 6
+    "BrandId": 6,
+    "ProductSubTypeId": 10
   },
   {
     "Name": "Casual Sneakers",
@@ -61,7 +68,8 @@
     "Price": 600,
     "PictureUrl": "images/products/CasualSneakers.jpg",
     "TypeId": 4,
-    "BrandId": 3
+    "BrandId": 3,
+    "ProductSubTypeId": 14
   },
   {
     "Name": "Classic Black Dress Pants",
@@ -69,7 +77,8 @@
     "Price": 400,
     "PictureUrl": "images/products/ClassicBlackDressPants.jpg",
     "TypeId": 2,
-    "BrandId": 1
+    "BrandId": 1,
+    "ProductSubTypeId": 6
   },
   {
     "Name": "Knitted Sweater",
@@ -77,7 +86,8 @@
     "Price": 380,
     "PictureUrl": "images/products/KnittedSweater.jpg",
     "TypeId": 1,
-    "BrandId": 2
+    "BrandId": 2,
+    "ProductSubTypeId": 3
   },
   {
     "Name": "Men's Polo Shirt",
@@ -85,7 +95,8 @@
     "Price": 200,
     "PictureUrl": "images/products/MensPoloShirt.jpg",
     "TypeId": 1,
-    "BrandId": 4
+    "BrandId": 4,
+    "ProductSubTypeId": 2
   },
   {
     "Name": "Women's Trench Coat",
@@ -93,7 +104,8 @@
     "Price": 950,
     "PictureUrl": "images/products/WomensTrenchCoat.jpeg",
     "TypeId": 3,
-    "BrandId": 5
+    "BrandId": 5,
+    "ProductSubTypeId": 8
   },
   {
     "Name": "Wool Scarf",
@@ -101,6 +113,7 @@
     "Price": 150,
     "PictureUrl": "images/products/WoolScarf.jpg",
     "TypeId": 4,
-    "BrandId": 2
+    "BrandId": 2,
+    "ProductSubTypeId": 13
   }
 ]

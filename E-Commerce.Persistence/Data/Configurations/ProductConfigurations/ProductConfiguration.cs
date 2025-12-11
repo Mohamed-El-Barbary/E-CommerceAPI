@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,6 +34,11 @@ namespace E_Commerce.Persistence.Data.Configurations
             builder.HasOne(x => x.ProductType)
                 .WithMany()
                 .HasForeignKey(x => x.TypeId);
+
+            builder.HasOne(p => p.ProductSubType)
+                .WithMany()
+                .HasForeignKey(p => p.ProductSubTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

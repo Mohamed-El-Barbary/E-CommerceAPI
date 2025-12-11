@@ -25,14 +25,20 @@ public class DataInitializer : IDataInitializer
             var hasProductBrands = await _dbContext.ProductBrands.AnyAsync();
             var hasProductTypes = await _dbContext.ProductTypes.AnyAsync();
             var hasDeliverMethod = await _dbContext.Set<DeliveryMethod>().AnyAsync();
+            var hasProductSubTypes = await _dbContext.Set<ProductSubType>().AnyAsync();
 
-            if (hasProductTypes && hasProductBrands && hasProduct && hasDeliverMethod) return;
+            if (hasProductTypes && hasProductBrands && hasProduct && hasDeliverMethod && hasProductSubTypes) return;
 
             if (!hasProductBrands)
                 await SeedDataFromJsonAsync<ProductBrand, int>("brands.json", _dbContext.ProductBrands);
 
             if (!hasProductTypes)
                 await SeedDataFromJsonAsync<ProductType, int>("types.json", _dbContext.ProductTypes);
+
+            await _dbContext.SaveChangesAsync();
+
+            if (!hasProductSubTypes)
+                await SeedDataFromJsonAsync<ProductSubType, int>("subTypes.json", _dbContext.Set<ProductSubType>());
 
             await _dbContext.SaveChangesAsync();
 
