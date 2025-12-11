@@ -9,4 +9,6 @@ public class ProductDTO
     public decimal Price { get; set; }
     public string ProductBrand { get; set; } = default!;
     public string ProductType { get; set; } = default!;
+    public string ProductSubType { get; set; } = default!;
+
 }

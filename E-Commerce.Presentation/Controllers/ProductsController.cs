@@ -17,7 +17,7 @@ public class ProductsController : ApiBaseController
         _productService = productService;
     }
 
-    [Authorize]
+    //[Authorize]
     [HttpGet ]
     [RedisCache]
     public async Task<ActionResult<PaginatedResult<ProductDTO>>> GetAllProducts([FromQuery] ProductQueryparams queryparams)

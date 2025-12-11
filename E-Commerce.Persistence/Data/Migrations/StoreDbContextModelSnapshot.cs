@@ -51,7 +51,7 @@ namespace E_Commerce.Persistence.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeliveryMethod");
+                    b.ToTable("DeliveryMethod", (string)null);
                 });
 
             modelBuilder.Entity("E_Commerce.Domain.Entities.OrderModule.Order", b =>
@@ -81,7 +81,7 @@ namespace E_Commerce.Persistence.Data.Migrations
 
                     b.HasIndex("DeliveryMethodId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Order", (string)null);
                 });
 
             modelBuilder.Entity("E_Commerce.Domain.Entities.OrderModule.OrderItem", b =>
@@ -106,7 +106,7 @@ namespace E_Commerce.Persistence.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItem");
+                    b.ToTable("OrderItem", (string)null);
                 });
 
             modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.Product", b =>
@@ -153,7 +153,7 @@ namespace E_Commerce.Persistence.Data.Migrations
 
                     b.HasIndex("TypeId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductBrand", b =>
@@ -171,7 +171,7 @@ namespace E_Commerce.Persistence.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductBrands");
+                    b.ToTable("ProductBrands", (string)null);
                 });
 
             modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductSubType", b =>
@@ -194,7 +194,7 @@ namespace E_Commerce.Persistence.Data.Migrations
 
                     b.HasIndex("ProductTypeId");
 
-                    b.ToTable("ProductSubType");
+                    b.ToTable("ProductSubType", (string)null);
                 });
 
             modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductType", b =>
@@ -212,7 +212,7 @@ namespace E_Commerce.Persistence.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductTypes");
+                    b.ToTable("ProductTypes", (string)null);
                 });
 
             modelBuilder.Entity("E_Commerce.Domain.Entities.OrderModule.Order", b =>
@@ -255,7 +255,7 @@ namespace E_Commerce.Persistence.Data.Migrations
 
                             b1.HasKey("OrderId");
 
-                            b1.ToTable("Order");
+                            b1.ToTable("Order", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderId");
@@ -293,7 +293,7 @@ namespace E_Commerce.Persistence.Data.Migrations
 
                             b1.HasKey("OrderItemId");
 
-                            b1.ToTable("OrderItem");
+                            b1.ToTable("OrderItem", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderItemId");

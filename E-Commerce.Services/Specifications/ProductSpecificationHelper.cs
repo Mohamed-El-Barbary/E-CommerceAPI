@@ -10,6 +10,7 @@ internal static class ProductSpecificationHelper
     {
         return p => (!queryParams.BrandId.HasValue || p.BrandId == queryParams.BrandId.Value)
                     && (!queryParams.TypeId.HasValue || p.TypeId == queryParams.TypeId.Value)
+                    && (!queryParams.SubTypeId.HasValue || p.ProductSubTypeId == queryParams.SubTypeId.Value)
                     && (string.IsNullOrEmpty(queryParams.Search) || p.Name.ToLower().Contains(queryParams.Search.ToLower()));
     }
 }

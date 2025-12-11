@@ -11,6 +11,6 @@ namespace E_Commerce.Domain.Entities.ProductModule
         public string Name { get; set; } = default!;
 
         public int ProductTypeId { get; set; }
-        public ProductType productType { get; set; } = default!;
+        public ProductType ProductType { get; set; } = default!;
     }
 }

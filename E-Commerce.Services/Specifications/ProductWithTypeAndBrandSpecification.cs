@@ -9,6 +9,7 @@ internal class ProductWithTypeAndBrandSpecification : BaseSpecifications<Product
     {
         AddInclude(p => p.ProductBrand);
         AddInclude(p => p.ProductType);
+        AddInclude(p => p.ProductSubType);
     }
 
     public ProductWithTypeAndBrandSpecification(ProductQueryparams queryParams) :
@@ -16,6 +17,7 @@ internal class ProductWithTypeAndBrandSpecification : BaseSpecifications<Product
     {
         AddInclude(p => p.ProductBrand);
         AddInclude(p => p.ProductType);
+        AddInclude(p => p.ProductSubType);
 
         switch (queryParams.Sort)
         {
