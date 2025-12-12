@@ -35,6 +35,17 @@ namespace E_Commerce.Web
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddCors(opt =>
+            {
+                opt.AddPolicy(
+                    "DevelopmentPolicy",
+                    builder =>
+                    {
+                        builder.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowAnyOrigin();
+                    });
+            });
             builder.Services.AddDbContext<StoreDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -84,7 +95,7 @@ namespace E_Commerce.Web
                         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTOptions:SecretKey"]))
                 };
             });
-            
+
             #endregion
 
             var app = builder.Build();
@@ -101,7 +112,7 @@ namespace E_Commerce.Web
             #region Configure the HTTP request pipeline
 
             app.UseMiddleware<ExceptionHandlerMiddleWare>();
-            
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -109,8 +120,11 @@ namespace E_Commerce.Web
             }
 
             app.UseHttpsRedirection();
-            
+
             app.UseStaticFiles();
+
+            app.UseCors("DevelopmentPolicy");
+
             app.UseAuthentication();
             app.UseAuthorization();
 
