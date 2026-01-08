@@ -1,9 +1,11 @@
-﻿using System.Security.Claims;
-using E_Commerce.Services_Abstraction;
+﻿using E_Commerce.Services_Abstraction;
 using E_Commerce.Shared.CommonResult;
 using E_Commerce.Shared.DTOs.IdentityDTOs;
+using E_Commerce.Shared.DTOs.OrderDTOs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace E_Commerce.Presentation.Controllers;
 
@@ -11,11 +13,11 @@ public class AuthenticationController : ApiBaseController
 {
     private readonly IAuthenticationService _authenticationService;
 
-    public AuthenticationController(IAuthenticationService  authenticationService)
+    public AuthenticationController(IAuthenticationService authenticationService)
     {
         _authenticationService = authenticationService;
     }
-    
+
     // Login
     // POST : baseUrl/api/Authentication/Login
     [HttpPost("Login")]
@@ -24,7 +26,7 @@ public class AuthenticationController : ApiBaseController
         var result = await _authenticationService.LoginAsync(loginDto);
         return HandleResult(result);
     }
-    
+
     // Register
     // POST : baseUrl/api/Authentication/Register
     [HttpPost("Register")]
@@ -45,8 +47,29 @@ public class AuthenticationController : ApiBaseController
     [HttpGet("currentUser")]
     public async Task<ActionResult<UserDTO>> GetCurrentUser()
     {
-        var email = User.FindFirstValue(ClaimTypes.Email);
-        var result = await _authenticationService.GetUserByEmailAsync(email!);
+        var email = GetEmailFromToken();
+        var result = await _authenticationService.GetUserByEmailAsync(email);
+        return HandleResult(result);
+    }
+
+    [ProducesResponseType<AddressDTO>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
+    [Authorize]
+    [HttpGet("Address")]
+    public async Task<ActionResult<AddressDTO>> GetAddress()
+    {
+        var email = GetEmailFromToken();
+        var result = await _authenticationService.GetUserAddressAsync(email);
+        return HandleResult(result);
+    }
+
+    [Authorize]
+    [HttpPut("Address")]
+    public async Task<ActionResult<AddressDTO>> UpdateAddress(AddressDTO addressDTO)
+    {
+        var email = GetEmailFromToken();
+        var result = await _authenticationService.UpdateUserAddressAsync(addressDTO, email);
         return HandleResult(result);
     }
 
