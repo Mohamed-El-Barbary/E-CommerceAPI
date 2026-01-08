@@ -18,22 +18,30 @@ public class AuthenticationController : ApiBaseController
         _authenticationService = authenticationService;
     }
 
-    // Login
-    // POST : baseUrl/api/Authentication/Login
     [HttpPost("Login")]
     public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDto)
     {
         var result = await _authenticationService.LoginAsync(loginDto);
-        return HandleResult(result);
+
+        if (!result.IsSuccess)
+            return HandleResult(result);
+
+        SetRefreshTokenCookie(result.Value.RefershToken, result.Value.RefershTokenExpired);
+
+        return Ok(result.Value);
     }
 
-    // Register
-    // POST : baseUrl/api/Authentication/Register
     [HttpPost("Register")]
     public async Task<ActionResult<UserDTO>> Register(RegisterDTO registerDto)
     {
         var result = await _authenticationService.RegisterAsync(registerDto);
-        return HandleResult(result);
+
+        if (!result.IsSuccess)
+            return HandleResult(result);
+
+        SetRefreshTokenCookie(result.Value.RefershToken, result.Value.RefershTokenExpired);
+
+        return Ok(result.Value);
     }
 
     [HttpGet("emailExists")]
@@ -72,5 +80,20 @@ public class AuthenticationController : ApiBaseController
         var result = await _authenticationService.UpdateUserAddressAsync(addressDTO, email);
         return HandleResult(result);
     }
+
+    [HttpGet("refreshToken")]
+    public async Task<ActionResult<UserDTO>> RefreshToken()
+    {
+        var oldToken = Request.Cookies["refreshToken"];
+        var result = await _authenticationService.RefreshTokenAsync(oldToken!);
+
+        if (!result.IsSuccess) return Unauthorized();
+
+        SetRefreshTokenCookie(result.Value.RefershToken, result.Value.RefershTokenExpired);
+
+        return Ok(result.Value);
+    }
+
+
 
 }

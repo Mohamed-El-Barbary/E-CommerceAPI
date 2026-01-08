@@ -1,7 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using E_Commerce.Domain.Entities.IdentityModule;
 using E_Commerce.Services_Abstraction;
 using E_Commerce.Shared.CommonResult;
@@ -11,6 +8,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace E_Commerce.Services.Services;
@@ -41,8 +42,9 @@ public class AuthenticationService : IAuthenticationService
         if (!isPasswordValid)
             return Error.InvalidCredentials("User.InvalidCredentials");
 
+        var refreshToken = await GenerateRefreshTokenAsync(user);
         var token = await CreateTokenAsync(user);
-        return new UserDTO(user.Email!, user.DisplayName, token);
+        return new UserDTO(user.Email!, user.DisplayName, token, refreshToken.Token, refreshToken.ExpiresOn);
     }
 
     public async Task<Result<UserDTO>> RegisterAsync(RegisterDTO registerDTO)
@@ -55,7 +57,6 @@ public class AuthenticationService : IAuthenticationService
         if (emailExists || phoneExists)
             return Error.Validation("EmailOrPhone.Exists", "Email or Phone number already exists.");
 
-
         var user = new ApplicationUser()
         {
             Email = registerDTO.Email,
@@ -65,13 +66,13 @@ public class AuthenticationService : IAuthenticationService
         };
 
         var identityResult = await _userManager.CreateAsync(user, registerDTO.Password);
-        if (identityResult.Succeeded)
-        {
-            var token = await CreateTokenAsync(user);
-            return new UserDTO(user.Email!, user.DisplayName, token);
-        }
+        if (!identityResult.Succeeded)
+            return identityResult.Errors.Select(e => Error.Validation(e.Code, e.Description)).ToList();
 
-        return identityResult.Errors.Select(e => Error.Validation(e.Code, e.Description)).ToList();
+        var refreshToken = await GenerateRefreshTokenAsync(user);
+        var token = await CreateTokenAsync(user);
+
+        return new UserDTO(user.Email!, user.DisplayName, token, refreshToken.Token, refreshToken.ExpiresOn);
     }
 
     public async Task<bool> CheckEmailAsync(string email)
@@ -86,7 +87,7 @@ public class AuthenticationService : IAuthenticationService
         if (user is null)
             return Error.NotFound("User.NotFound", $"No User with Email {email} Was Found");
 
-        return new UserDTO(user.Email!, user.DisplayName, await CreateTokenAsync(user));
+        return new UserDTO(user.Email!, user.DisplayName, await CreateTokenAsync(user), "", DateTime.Now);
     }
 
     public async Task<Result<AddressDTO>> GetUserAddressAsync(string email)
@@ -130,6 +131,45 @@ public class AuthenticationService : IAuthenticationService
         return _mapper.Map<Address, AddressDTO>(user.Address!);
     }
 
+    public async Task<Result<UserDTO>> RefreshTokenAsync(string refreshToken)
+    {
+        var user = await _userManager.Users
+                                     .Include(x => x.RefreshTokens)
+                                     .FirstOrDefaultAsync(x
+                                     => x.RefreshTokens.Any(x => x.Token == refreshToken && x.RevokeOn == null && x.ExpiresOn > DateTime.UtcNow));
+
+        if (user is null) return Error.Unauthorized("Invalid.RefreshToken");
+
+        var oldToken = user.RefreshTokens.First(x => x.Token == refreshToken);
+        oldToken.RevokeOn = DateTime.UtcNow;
+
+        var newRefreshToken = await GenerateRefreshTokenAsync(user);
+        var accessToken = await CreateTokenAsync(user);
+
+        return new UserDTO(user.Email!, user.DisplayName, accessToken, newRefreshToken.Token, newRefreshToken.ExpiresOn);
+    }
+
+    public async Task CleanExpiredRefreshTokensAsync()
+    {
+        var users = await _userManager.Users
+            .Include(u => u.RefreshTokens)
+            .ToListAsync();
+
+        foreach (var user in users)
+        {
+            var inactiveTokens = user.RefreshTokens
+                .Where(t => !t.IsActive)
+                .ToList();
+
+            foreach (var token in inactiveTokens)
+            {
+                user.RefreshTokens.Remove(token);
+            }
+
+            await _userManager.UpdateAsync(user);
+        }
+    }
+
     private async Task<string> CreateTokenAsync(ApplicationUser user)
     {
         // Token [Issuer, Audience, Claims, Expires, SigningCredentials]
@@ -146,17 +186,32 @@ public class AuthenticationService : IAuthenticationService
         }
 
         var secretKey = _configuration["JWTOptions:SecretKey"];
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!));
         var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
             issuer: _configuration["JWTOptions:Issuer"],
             audience: _configuration["JWTOptions:Audience"],
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(1),
+            expires: DateTime.UtcNow.AddMinutes(10),
             signingCredentials: cred
         );
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    private async Task<RefreshToken> GenerateRefreshTokenAsync(ApplicationUser user, int expireDays = 10)
+    {
+        var refreshToken = new RefreshToken
+        {
+            Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)),
+            CreatedOn = DateTime.UtcNow,
+            ExpiresOn = DateTime.UtcNow.AddDays(expireDays)
+        };
+
+        user.RefreshTokens.Add(refreshToken);
+        await _userManager.UpdateAsync(user);
+
+        return refreshToken;
     }
 
 }

@@ -1,6 +1,8 @@
 ﻿using E_Commerce.Domain.Contracts;
 using E_Commerce.Persistence.Data.DbContexts;
 using E_Commerce.Persistence.IdentityData.DbContexts;
+using E_Commerce.Services_Abstraction;
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
 
 namespace E_Commerce.Web.Extenions;
@@ -41,4 +43,20 @@ public static class WebApplicationRegistration
         await dataInitializerService.InitializeAsync();
         return app;
     }
+
+    public static async Task<WebApplication> UseRefreshTokenJobsAsync(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
+        var authService = scope.ServiceProvider.GetRequiredService<IAuthenticationService>();
+
+        recurringJobManager.AddOrUpdate(
+            "Clean-Refresh-Tokens",
+            () => authService.CleanExpiredRefreshTokensAsync(),
+            Cron.Weekly
+        );
+
+        return app;
+    }
+
 }

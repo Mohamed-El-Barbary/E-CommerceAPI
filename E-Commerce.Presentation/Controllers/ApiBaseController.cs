@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace E_Commerce.Presentation.Controllers;
+
 [ApiController]
 [Route("api/[controller]")]
 public class ApiBaseController : ControllerBase
@@ -28,7 +29,20 @@ public class ApiBaseController : ControllerBase
     }
 
     protected string GetEmailFromToken() => User.FindFirstValue(ClaimTypes.Email)!;
-    
+
+    protected void SetRefreshTokenCookie(string refreshToken, DateTime expires)
+    {
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = expires.ToLocalTime(),
+        };
+
+        Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+    }
+
     private ActionResult HandleProblem(IReadOnlyList<Error> errors)
     {
         // If No Errors Are Provided , Return 500 Error
@@ -39,7 +53,7 @@ public class ApiBaseController : ControllerBase
             return HandleValidationProblem(errors);
         // If There's Only One Error , Handle It As A Single Error Problem
         return HandleSingleProblem(errors[0]);
-        
+
     }
 
     private ActionResult HandleSingleProblem(Error error)
@@ -62,11 +76,11 @@ public class ApiBaseController : ControllerBase
         ErrorType.Failure => StatusCodes.Status500InternalServerError,
         _ => StatusCodes.Status500InternalServerError
     };
-    
+
     private ActionResult HandleValidationProblem(IReadOnlyList<Error> errors)
     {
         var modelState = new ModelStateDictionary();
-        
+
         foreach (var error in errors)
             modelState.AddModelError(error.Code, error.Description);
 

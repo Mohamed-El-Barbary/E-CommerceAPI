@@ -18,6 +18,9 @@ public interface IAuthenticationService
     
     Task<Result<UserDTO>> GetUserByEmailAsync(string email);
 
+    Task<Result<UserDTO>> RefreshTokenAsync(string refreshToken);
+    Task CleanExpiredRefreshTokensAsync();
+
     Task<Result<AddressDTO>> GetUserAddressAsync(string email);
 
     Task<Result<AddressDTO>> UpdateUserAddressAsync(AddressDTO addressDTO, string email);
