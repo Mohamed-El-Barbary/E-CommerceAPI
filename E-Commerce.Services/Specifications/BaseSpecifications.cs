@@ -9,6 +9,12 @@ internal abstract class BaseSpecifications<TEntity, TKey> : ISpecifications<TEnt
 {
     public Expression<Func<TEntity, bool>> Criteria { get; }
 
+
+    protected BaseSpecifications()
+    {
+        Criteria = null;
+    }
+
     protected BaseSpecifications(Expression<Func<TEntity, bool>> criteriaExpression)
     {
         Criteria = criteriaExpression;
