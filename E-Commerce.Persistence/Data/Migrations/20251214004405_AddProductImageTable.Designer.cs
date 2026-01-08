@@ -4,6 +4,7 @@ using E_Commerce.Persistence.Data.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Commerce.Persistence.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    partial class StoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251214004405_AddProductImageTable")]
+    partial class AddProductImageTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,10 +68,6 @@ namespace E_Commerce.Persistence.Data.Migrations
 
                     b.Property<DateTimeOffset>("OrderDate")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -448,7 +447,7 @@ namespace E_Commerce.Persistence.Data.Migrations
             modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductSubType", b =>
                 {
                     b.HasOne("E_Commerce.Domain.Entities.ProductModule.ProductType", "ProductType")
-                        .WithMany("ProductSubTypes")
+                        .WithMany("productSubTypes")
                         .HasForeignKey("ProductTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -472,7 +471,7 @@ namespace E_Commerce.Persistence.Data.Migrations
 
             modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductType", b =>
                 {
-                    b.Navigation("ProductSubTypes");
+                    b.Navigation("productSubTypes");
                 });
 #pragma warning restore 612, 618
         }

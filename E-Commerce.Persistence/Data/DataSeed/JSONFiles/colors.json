@@ -1,0 +1,194 @@
+[
+  {
+    "ProductId": 1,
+    "ColorName": "White",
+    "HexValue": "#FFFFFF"
+  },
+  {
+    "ProductId": 1,
+    "ColorName": "Black",
+    "HexValue": "#000000"
+  },
+  {
+    "ProductId": 1,
+    "ColorName": "Gray",
+    "HexValue": "#808080"
+  },
+
+  {
+    "ProductId": 2,
+    "ColorName": "Blue",
+    "HexValue": "#0000FF"
+  },
+  {
+    "ProductId": 2,
+    "ColorName": "Dark Blue",
+    "HexValue": "#00008B"
+  },
+  {
+    "ProductId": 2,
+    "ColorName": "Black",
+    "HexValue": "#000000"
+  },
+
+  {
+    "ProductId": 3,
+    "ColorName": "Blue",
+    "HexValue": "#0000FF"
+  },
+  {
+    "ProductId": 3,
+    "ColorName": "Black",
+    "HexValue": "#000000"
+  },
+  {
+    "ProductId": 3,
+    "ColorName": "Dark Gray",
+    "HexValue": "#A9A9A9"
+  },
+
+  {
+    "ProductId": 4,
+    "ColorName": "Gray",
+    "HexValue": "#808080"
+  },
+  {
+    "ProductId": 4,
+    "ColorName": "Black",
+    "HexValue": "#000000"
+  },
+  {
+    "ProductId": 4,
+    "ColorName": "Navy",
+    "HexValue": "#000080"
+  },
+
+  {
+    "ProductId": 5,
+    "ColorName": "Black",
+    "HexValue": "#000000"
+  },
+  {
+    "ProductId": 5,
+    "ColorName": "Dark Gray",
+    "HexValue": "#A9A9A9"
+  },
+  {
+    "ProductId": 5,
+    "ColorName": "Navy",
+    "HexValue": "#000080"
+  },
+
+  {
+    "ProductId": 6,
+    "ColorName": "Red",
+    "HexValue": "#FF0000"
+  },
+  {
+    "ProductId": 6,
+    "ColorName": "Blue",
+    "HexValue": "#0000FF"
+  },
+  {
+    "ProductId": 6,
+    "ColorName": "Yellow",
+    "HexValue": "#FFFF00"
+  },
+
+  {
+    "ProductId": 7,
+    "ColorName": "Brown",
+    "HexValue": "#A52A2A"
+  },
+  {
+    "ProductId": 7,
+    "ColorName": "Black",
+    "HexValue": "#000000"
+  },
+
+  {
+    "ProductId": 8,
+    "ColorName": "White",
+    "HexValue": "#FFFFFF"
+  },
+  {
+    "ProductId": 8,
+    "ColorName": "Black",
+    "HexValue": "#000000"
+  },
+  {
+    "ProductId": 8,
+    "ColorName": "Gray",
+    "HexValue": "#808080"
+  },
+
+  {
+    "ProductId": 9,
+    "ColorName": "Black",
+    "HexValue": "#000000"
+  },
+  {
+    "ProductId": 9,
+    "ColorName": "Gray",
+    "HexValue": "#808080"
+  },
+
+  {
+    "ProductId": 10,
+    "ColorName": "Red",
+    "HexValue": "#FF0000"
+  },
+  {
+    "ProductId": 10,
+    "ColorName": "Blue",
+    "HexValue": "#0000FF"
+  },
+  {
+    "ProductId": 10,
+    "ColorName": "Green",
+    "HexValue": "#008000"
+  },
+
+  {
+    "ProductId": 11,
+    "ColorName": "White",
+    "HexValue": "#FFFFFF"
+  },
+  {
+    "ProductId": 11,
+    "ColorName": "Blue",
+    "HexValue": "#0000FF"
+  },
+  {
+    "ProductId": 11,
+    "ColorName": "Black",
+    "HexValue": "#000000"
+  },
+
+  {
+    "ProductId": 12,
+    "ColorName": "Beige",
+    "HexValue": "#F5F5DC"
+  },
+  {
+    "ProductId": 12,
+    "ColorName": "Brown",
+    "HexValue": "#A52A2A"
+  },
+  {
+    "ProductId": 12,
+    "ColorName": "Black",
+    "HexValue": "#000000"
+  },
+
+  {
+    "ProductId": 13,
+    "ColorName": "Red",
+    "HexValue": "#FF0000"
+  },
+  {
+    "ProductId": 13,
+    "ColorName": "Gray",
+    "HexValue": "#808080"
+  }
+]
