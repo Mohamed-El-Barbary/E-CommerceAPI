@@ -5,9 +5,12 @@ namespace E_Commerce.Shared.DTOs.BasketDTOs;
 public record BasketItemDTO(
     int Id,
     string ProductName,
+    string ProductSubType,
     string PictureUrl,
     [Range(1, double.MaxValue, ErrorMessage = "Price must be greater than zero.")]
     decimal Price,
+    string Color,
+    string Size,
     [Range(1, 100)]
     int Quantity
     );

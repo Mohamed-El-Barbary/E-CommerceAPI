@@ -21,7 +21,7 @@ public class BasketRepository : IBasketRepository
         if (basket.IsNullOrEmpty)
             return null;
         else
-            return JsonSerializer.Deserialize<CustomerBasket>(basket);
+            return JsonSerializer.Deserialize<CustomerBasket>(basket!);
     }
 
     public async Task<CustomerBasket?> CreateOrUpdateBasketAsync(CustomerBasket basket, TimeSpan timeToLive = default)

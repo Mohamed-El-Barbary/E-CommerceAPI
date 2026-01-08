@@ -23,6 +23,8 @@ public class BasketService : IBasketService
         var basket = await _basketRepository.GetBasketAsync(basketId);
         if (basket is null)
             throw new BasketNotFoundException(basketId);
+        basket.NumOfCartItems = basket.Items.Count;
+        basket.TotalPrice = basket.Items.Sum(i => i.Quantity * i.Price);
         return _mapper.Map<CustomerBasket,BasketDTO>(basket!);
     }
 
