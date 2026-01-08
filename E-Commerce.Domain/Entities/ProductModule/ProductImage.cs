@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace E_Commerce.Domain.Entities.ProductModule
 {
-    public class ProductType : BaseEntity<int>
+    public class ProductImage: BaseEntity<int>
     {
-        public string Name { get; set; } = default!;
-        public ICollection<ProductSubType> ProductSubTypes { get; set; } = [];
-
+        public string PictureUrl { get; set; } = default!;
     }
 }

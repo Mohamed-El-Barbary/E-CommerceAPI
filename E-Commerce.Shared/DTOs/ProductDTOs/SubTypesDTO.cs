@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace E_Commerce.Domain.Entities.ProductModule
+namespace E_Commerce.Shared.DTOs.ProductDTOs
 {
-    public class ProductType : BaseEntity<int>
+    public class SubTypesDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; } = default!;
-        public ICollection<ProductSubType> ProductSubTypes { get; set; } = [];
-
     }
 }

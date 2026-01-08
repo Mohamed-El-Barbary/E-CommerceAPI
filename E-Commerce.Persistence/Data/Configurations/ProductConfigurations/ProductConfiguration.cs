@@ -25,7 +25,13 @@ namespace E_Commerce.Persistence.Data.Configurations
                 .HasMaxLength(200);
 
             builder.Property(x => x.Price)
-                .HasPrecision(18, 2);
+                .HasPrecision(8, 2);
+
+            builder.Property(x => x.Discount)
+                .HasPrecision(8, 2);
+
+            builder.Property(x => x.SKU)
+                .HasMaxLength(50);
 
             builder.HasOne(x => x.ProductBrand)
                 .WithMany()
