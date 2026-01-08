@@ -32,7 +32,7 @@ public class OrdersController : ApiBaseController
 
     [Authorize]
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<OrderToReturnDTO>> GetOrder(Guid id, string email)
+    public async Task<ActionResult<OrderToReturnDTO>> GetOrder(Guid id)
     {
         var result = await _orderService.GetOrderByIdAsync(id, GetEmailFromToken());
         return HandleResult(result);
