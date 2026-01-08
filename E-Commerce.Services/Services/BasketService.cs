@@ -5,7 +5,7 @@ using E_Commerce.Services_Abstraction;
 using E_Commerce.Services.Exceptions;
 using E_Commerce.Shared.DTOs.BasketDTOs;
 
-namespace E_Commerce.Services;
+namespace E_Commerce.Services.Services;
 
 public class BasketService : IBasketService
 {

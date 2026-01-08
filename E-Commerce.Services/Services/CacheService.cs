@@ -2,7 +2,7 @@
 using E_Commerce.Domain.Contracts;
 using E_Commerce.Services_Abstraction;
 
-namespace E_Commerce.Services;
+namespace E_Commerce.Services.Services;
 
 public class CacheService : ICacheService
 {

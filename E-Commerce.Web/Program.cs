@@ -7,7 +7,6 @@ using E_Commerce.Persistence.IdentityData.DataSeed;
 using E_Commerce.Persistence.IdentityData.DbContexts;
 using E_Commerce.Persistence.Repositories;
 using E_Commerce.Services_Abstraction;
-using E_Commerce.Services;
 using E_Commerce.Services.MappingProfiles;
 using E_Commerce.Web.CustomMiddleWares;
 using E_Commerce.Web.Extenions;
@@ -20,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
+using E_Commerce.Services.Services;
 
 namespace E_Commerce.Web
 {

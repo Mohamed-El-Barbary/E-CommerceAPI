@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
-namespace E_Commerce.Services;
+namespace E_Commerce.Services.Services;
 
 public class AuthenticationService : IAuthenticationService
 {

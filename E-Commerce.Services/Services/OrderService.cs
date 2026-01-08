@@ -8,7 +8,7 @@ using E_Commerce.Services.Specifications;
 using E_Commerce.Shared.CommonResult;
 using E_Commerce.Shared.DTOs.OrderDTOs;
 
-namespace E_Commerce.Services;
+namespace E_Commerce.Services.Services;
 
 public class OrderService : IOrderService
 {

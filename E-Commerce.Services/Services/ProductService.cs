@@ -9,7 +9,7 @@ using E_Commerce.Shared.CommonResult;
 using E_Commerce.Shared.DTOs.ProductDTOs;
 using System;
 
-namespace E_Commerce.Services;
+namespace E_Commerce.Services.Services;
 
 public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IProductService
 {
