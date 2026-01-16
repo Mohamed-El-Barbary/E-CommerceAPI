@@ -17,7 +17,7 @@ public class ProductQueryparams
     }
 
     private const int DefaultPageSize = 8;
-    private const int MaxPageSize = 10;
+    private const int MaxPageSize = 12;
     
     private int _pageSize = DefaultPageSize;
     
