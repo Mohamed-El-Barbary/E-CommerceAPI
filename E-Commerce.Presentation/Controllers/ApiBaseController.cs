@@ -3,6 +3,7 @@ using E_Commerce.Shared.CommonResult;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Hosting;
 
 namespace E_Commerce.Presentation.Controllers;
 
@@ -35,9 +36,11 @@ public class ApiBaseController : ControllerBase
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Secure = true,
-            SameSite = SameSiteMode.Strict,
-            Expires = expires.ToLocalTime(),
+            Secure = true,                    
+            SameSite = SameSiteMode.None,    
+            Path = "/",
+            Expires = expires,
+            IsEssential = true               
         };
 
         Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);

@@ -42,9 +42,11 @@ namespace E_Commerce.Web
                     "DevelopmentPolicy",
                     builder =>
                     {
-                        builder.AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowAnyOrigin();
+                        builder.WithOrigins("http://localhost:4200")
+                               .AllowAnyHeader()
+                               .AllowAnyMethod()
+                               .AllowCredentials()
+                               .SetIsOriginAllowed(_ => true);
                     });
             });
             builder.Services.AddDbContext<StoreDbContext>(options =>

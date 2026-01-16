@@ -193,7 +193,7 @@ public class AuthenticationService : IAuthenticationService
             issuer: _configuration["JWTOptions:Issuer"],
             audience: _configuration["JWTOptions:Audience"],
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(10),
+            expires: DateTime.UtcNow.AddMinutes(1),
             signingCredentials: cred
         );
         return new JwtSecurityTokenHandler().WriteToken(token);
