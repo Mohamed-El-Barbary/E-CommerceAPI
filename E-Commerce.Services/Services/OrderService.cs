@@ -8,7 +8,7 @@ using E_Commerce.Services.Specifications;
 using E_Commerce.Shared.CommonResult;
 using E_Commerce.Shared.DTOs.OrderDTOs;
 
-namespace E_Commerce.Services;
+namespace E_Commerce.Services.Services;
 
 public class OrderService : IOrderService
 {
@@ -54,14 +54,29 @@ public class OrderService : IOrderService
             DeliveryMethod = deliveryMethod,
             Items = orderItems,
             SubTotal = subTotal,
-            UserEmail = email
+            UserEmail = email,
+            Phone = orderDto.Phone
         };
 
-        await _unitOfWork.GetRepository<Order, Guid>().AddAsync(order);
-        int result = await _unitOfWork.SaveChangesAsync();
-        if (result == 0) return Error.Failure("Order.Failure", "Order Can Not Be Created");
+        try
+        {
 
-        return _mapper.Map<OrderToReturnDTO>(order);
+            await _unitOfWork.GetRepository<Order, Guid>().AddAsync(order);
+            int result = await _unitOfWork.SaveChangesAsync();
+            if (result == 0) return Error.Failure("Order.Failure", "Order Can Not Be Created");
+
+            return _mapper.Map<OrderToReturnDTO>(order);
+
+        }
+        catch (Exception ex)
+        {
+            // Log the exception details
+            Console.WriteLine($"Error creating order: {ex.Message}");
+            Console.WriteLine($"Inner Exception: {ex.InnerException?.Message}");
+
+            return Error.Failure("Database.Error", "Failed to save order to database");
+        }
+
     }
 
     public async Task<Result<IEnumerable<DeliveryMethodDTO>>> GetAllDeliverMothodsAsync()
@@ -97,7 +112,7 @@ public class OrderService : IOrderService
         var order = await _unitOfWork.GetRepository<Order, Guid>().GetByIdAsync(orderSpec);
         if (order is null)
             return Error.NotFound("Order.NotFound", $"No Orders Found With Id : {id}, For The User With Email : {email}");
-        
+
         var mappedOrder = _mapper.Map<OrderToReturnDTO>(order);
         return Result<OrderToReturnDTO>.Ok(mappedOrder);
     }

@@ -1,4 +1,3 @@
-using System.Text;
 using E_Commerce.Domain.Contracts;
 using E_Commerce.Domain.Entities.IdentityModule;
 using E_Commerce.Persistence.Data.DataSeed;
@@ -6,12 +5,13 @@ using E_Commerce.Persistence.Data.DbContexts;
 using E_Commerce.Persistence.IdentityData.DataSeed;
 using E_Commerce.Persistence.IdentityData.DbContexts;
 using E_Commerce.Persistence.Repositories;
-using E_Commerce.Services_Abstraction;
-using E_Commerce.Services;
 using E_Commerce.Services.MappingProfiles;
+using E_Commerce.Services.Services;
+using E_Commerce.Services_Abstraction;
 using E_Commerce.Web.CustomMiddleWares;
 using E_Commerce.Web.Extenions;
 using E_Commerce.Web.Factories;
+using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
+using System.Text;
 
 namespace E_Commerce.Web
 {
@@ -35,6 +36,19 @@ namespace E_Commerce.Web
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddCors(opt =>
+            {
+                opt.AddPolicy(
+                    "DevelopmentPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200")
+                               .AllowAnyHeader()
+                               .AllowAnyMethod()
+                               .AllowCredentials()
+                               .SetIsOriginAllowed(_ => true);
+                    });
+            });
             builder.Services.AddDbContext<StoreDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -43,6 +57,10 @@ namespace E_Commerce.Web
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
             });
+            builder.Services.AddHangfire(configuration => configuration
+                .UseSqlServerStorage(builder.Configuration.GetConnectionString("IdentityConnection"))
+            );
+            builder.Services.AddHangfireServer();
             builder.Services.AddKeyedScoped<IDataInitializer, DataInitializer>("Default");
             builder.Services.AddKeyedScoped<IDataInitializer, IdentityDataInitializer>("Identity");
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -81,10 +99,10 @@ namespace E_Commerce.Web
                     ValidIssuer = builder.Configuration["JWTOptions:Issuer"],
                     ValidAudience = builder.Configuration["JWTOptions:Audience"],
                     IssuerSigningKey =
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTOptions:SecretKey"]))
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTOptions:SecretKey"]!))
                 };
             });
-            
+
             #endregion
 
             var app = builder.Build();
@@ -98,10 +116,16 @@ namespace E_Commerce.Web
 
             #endregion
 
+            #region Background Jobs
+            app.UseHangfireDashboard("/hangfire");
+            await app.UseRefreshTokenJobsAsync();
+
+            #endregion
+
             #region Configure the HTTP request pipeline
 
             app.UseMiddleware<ExceptionHandlerMiddleWare>();
-            
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -109,8 +133,11 @@ namespace E_Commerce.Web
             }
 
             app.UseHttpsRedirection();
-            
+
             app.UseStaticFiles();
+
+            app.UseCors("DevelopmentPolicy");
+
             app.UseAuthentication();
             app.UseAuthorization();
 

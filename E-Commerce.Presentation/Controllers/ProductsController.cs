@@ -17,7 +17,7 @@ public class ProductsController : ApiBaseController
         _productService = productService;
     }
 
-    [Authorize]
+    //[Authorize]
     [HttpGet ]
     [RedisCache]
     public async Task<ActionResult<PaginatedResult<ProductDTO>>> GetAllProducts([FromQuery] ProductQueryparams queryparams)
@@ -46,4 +46,14 @@ public class ProductsController : ApiBaseController
         var types = await _productService.GetAllTypesAsync();
         return Ok(types);
     }
+
+    [HttpGet("types/{id}")]
+    public async Task<ActionResult<IEnumerable<TypeDTO>>> GetAllTypesWithSubTypes(int id)
+    {
+        var types = await _productService.GetAllTypesWithSubTypes(id);
+        return Ok(types);
+    }
+
+    
+
 }

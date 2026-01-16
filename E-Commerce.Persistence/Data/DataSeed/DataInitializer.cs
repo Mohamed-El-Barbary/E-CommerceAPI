@@ -26,8 +26,16 @@ public class DataInitializer : IDataInitializer
             var hasProductTypes = await _dbContext.ProductTypes.AnyAsync();
             var hasDeliverMethod = await _dbContext.Set<DeliveryMethod>().AnyAsync();
             var hasProductSubTypes = await _dbContext.Set<ProductSubType>().AnyAsync();
+            var hasProductSizes = await _dbContext.Set<ProductSize>().AnyAsync();
+            var hasProductColors = await _dbContext.Set<ProductColor>().AnyAsync();
 
-            if (hasProductTypes && hasProductBrands && hasProduct && hasDeliverMethod && hasProductSubTypes) return;
+            if (hasProductTypes 
+                && hasProductBrands 
+                && hasProduct 
+                && hasDeliverMethod 
+                && hasProductSubTypes 
+                && hasProductColors 
+                && hasProductColors) return;
 
             if (!hasProductBrands)
                 await SeedDataFromJsonAsync<ProductBrand, int>("brands.json", _dbContext.ProductBrands);
@@ -49,6 +57,15 @@ public class DataInitializer : IDataInitializer
                 await SeedDataFromJsonAsync<DeliveryMethod, int>("delivery.json", _dbContext.Set<DeliveryMethod>());
 
             await _dbContext.SaveChangesAsync();
+
+            if (!hasProductColors)
+                await SeedDataFromJsonAsync<ProductColor, int>("colors.json", _dbContext.Set<ProductColor>());
+
+            if (!hasProductSizes)
+                await SeedDataFromJsonAsync<ProductSize, int>("sizes.json", _dbContext.Set<ProductSize>());
+
+            await _dbContext.SaveChangesAsync();
+
         }
         catch (Exception e)
         {

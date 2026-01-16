@@ -1,14 +1,15 @@
 ﻿using AutoMapper;
 using E_Commerce.Domain.Contracts;
 using E_Commerce.Domain.Entities.ProductModule;
-using E_Commerce.Services_Abstraction;
 using E_Commerce.Services.Exceptions;
 using E_Commerce.Services.Specifications;
+using E_Commerce.Services_Abstraction;
 using E_Commerce.Shared;
 using E_Commerce.Shared.CommonResult;
 using E_Commerce.Shared.DTOs.ProductDTOs;
+using System;
 
-namespace E_Commerce.Services;
+namespace E_Commerce.Services.Services;
 
 public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IProductService
 {
@@ -40,7 +41,15 @@ public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IProductSe
 
     public async Task<IEnumerable<TypeDTO>> GetAllTypesAsync()
     {
-        var types = await unitOfWork.GetRepository<ProductType, int>().GetAllAsync();
+        var typeSpec = new TypesWithSubTypesSpecification();
+        var types = await unitOfWork.GetRepository<ProductType, int>().GetAllAsync(typeSpec);
+        return mapper.Map<IEnumerable<TypeDTO>>(types);
+    }
+
+    public async Task<IEnumerable<TypeDTO>> GetAllTypesWithSubTypes(int typeId)
+    {
+        var typeSpec = new TypesWithSubTypesSpecification(typeId);
+        var types = await unitOfWork.GetRepository<ProductType, int>().GetAllAsync(typeSpec);
         return mapper.Map<IEnumerable<TypeDTO>>(types);
     }
 }

@@ -12,6 +12,18 @@ namespace E_Commerce.Domain.Entities.ProductModule
         public string Description { get; set; } = default!;
         public string PictureUrl { get; set; } = default!;
         public decimal Price { get; set; } = default!;
+        public decimal? Discount { get; set; }
+
+        // Variants
+        public ICollection<ProductColor> ProductColors { get; set; } = [];
+        public ICollection<ProductSize> ProductSizes { get; set; } = [];
+
+        public ICollection<ProductImage>? ProductImages { get; set; } = [];
+
+
+        // Inventory
+        public int Stock { get; set; }
+        public string SKU { get; set; } = default!;
 
         #region Relationships
 

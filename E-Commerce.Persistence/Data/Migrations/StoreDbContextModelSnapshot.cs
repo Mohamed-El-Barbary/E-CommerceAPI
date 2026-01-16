@@ -66,6 +66,10 @@ namespace E_Commerce.Persistence.Data.Migrations
                     b.Property<DateTimeOffset>("OrderDate")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -125,6 +129,10 @@ namespace E_Commerce.Persistence.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<decimal?>("Discount")
+                        .HasPrecision(8, 2)
+                        .HasColumnType("decimal(8,2)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -136,10 +144,18 @@ namespace E_Commerce.Persistence.Data.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(8, 2)
+                        .HasColumnType("decimal(8,2)");
 
                     b.Property<int>("ProductSubTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SKU")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("Stock")
                         .HasColumnType("int");
 
                     b.Property<int>("TypeId")
@@ -172,6 +188,76 @@ namespace E_Commerce.Persistence.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductBrands");
+                });
+
+            modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductColor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ColorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HexValue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductColor");
+                });
+
+            modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("PictureUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImage");
+                });
+
+            modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductSize", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductSize");
                 });
 
             modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductSubType", b =>
@@ -330,15 +416,44 @@ namespace E_Commerce.Persistence.Data.Migrations
                     b.Navigation("ProductType");
                 });
 
+            modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductColor", b =>
+                {
+                    b.HasOne("E_Commerce.Domain.Entities.ProductModule.Product", "Product")
+                        .WithMany("ProductColors")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductImage", b =>
+                {
+                    b.HasOne("E_Commerce.Domain.Entities.ProductModule.Product", null)
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductId");
+                });
+
+            modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductSize", b =>
+                {
+                    b.HasOne("E_Commerce.Domain.Entities.ProductModule.Product", "Product")
+                        .WithMany("ProductSizes")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductSubType", b =>
                 {
-                    b.HasOne("E_Commerce.Domain.Entities.ProductModule.ProductType", "productType")
-                        .WithMany("productSubTypes")
+                    b.HasOne("E_Commerce.Domain.Entities.ProductModule.ProductType", "ProductType")
+                        .WithMany("ProductSubTypes")
                         .HasForeignKey("ProductTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("productType");
+                    b.Navigation("ProductType");
                 });
 
             modelBuilder.Entity("E_Commerce.Domain.Entities.OrderModule.Order", b =>
@@ -346,9 +461,18 @@ namespace E_Commerce.Persistence.Data.Migrations
                     b.Navigation("Items");
                 });
 
+            modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.Product", b =>
+                {
+                    b.Navigation("ProductColors");
+
+                    b.Navigation("ProductImages");
+
+                    b.Navigation("ProductSizes");
+                });
+
             modelBuilder.Entity("E_Commerce.Domain.Entities.ProductModule.ProductType", b =>
                 {
-                    b.Navigation("productSubTypes");
+                    b.Navigation("ProductSubTypes");
                 });
 #pragma warning restore 612, 618
         }

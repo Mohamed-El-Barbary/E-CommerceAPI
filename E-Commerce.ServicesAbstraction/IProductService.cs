@@ -13,4 +13,7 @@ public interface IProductService
     Task<IEnumerable<BrandDTO>> GetAllBrandsAsync();
 
     Task<IEnumerable<TypeDTO>> GetAllTypesAsync();
+
+    Task<IEnumerable<TypeDTO>> GetAllTypesWithSubTypes(int typeId);
+
 }

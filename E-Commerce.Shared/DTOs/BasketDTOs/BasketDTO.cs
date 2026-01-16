@@ -1,3 +1,3 @@
 ﻿namespace E_Commerce.Shared.DTOs.BasketDTOs;
 
-public record BasketDTO (string Id  ,ICollection<BasketItemDTO> Items);
+public record BasketDTO(string Id, decimal TotalPrice, int NumOfCartItems, ICollection<BasketItemDTO> Items);
