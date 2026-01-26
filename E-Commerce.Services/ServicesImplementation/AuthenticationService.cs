@@ -75,10 +75,10 @@ public class AuthenticationService : IAuthenticationService
         return new UserDTO(user.Email!, user.DisplayName, token, refreshToken.Token, refreshToken.ExpiresOn);
     }
 
-    public async Task LogoutAsync(string refreshToken)
+    public async Task<Result<string>> LogoutAsync(string refreshToken)
     {
         if (string.IsNullOrEmpty(refreshToken))
-            return;
+            return Result<string>.Ok("Already logged out");
 
         var user = await _userManager.Users
             .Include(u => u.RefreshTokens)
@@ -86,14 +86,15 @@ public class AuthenticationService : IAuthenticationService
                 u.RefreshTokens.Any(t => t.Token == refreshToken && t.RevokeOn == null));
 
         if (user is null)
-            return;
+            return Result<string>.Ok("Token not found or already revoked"); ;
 
         var token = user.RefreshTokens.First(t => t.Token == refreshToken);
-
         token.RevokeOn = DateTime.UtcNow;
         token.ExpiresOn = DateTime.UtcNow;
 
         await _userManager.UpdateAsync(user);
+
+        return Result<string>.Ok("Logout.successful");
     }
 
     public async Task<bool> CheckEmailAsync(string email)

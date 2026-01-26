@@ -14,5 +14,5 @@ public interface IAuthenticationService
     Task CleanExpiredRefreshTokensAsync();
     Task<Result<AddressDTO>> GetUserAddressAsync(string email);
     Task<Result<AddressDTO>> UpdateUserAddressAsync(AddressDTO addressDTO, string email);
-    Task LogoutAsync(string refreshToken);
+    Task<Result<string>> LogoutAsync(string refreshToken);
 }
