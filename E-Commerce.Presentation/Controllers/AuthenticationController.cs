@@ -44,6 +44,19 @@ public class AuthenticationController : ApiBaseController
         return Ok(result.Value);
     }
 
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        var refreshToken = Request.Cookies["refreshToken"];
+
+        await _authenticationService.LogoutAsync(refreshToken!);
+
+        Response.Cookies.Delete("refreshToken");
+
+        return Ok();
+    }
+
+
     [HttpGet("emailExists")]
     public async Task<ActionResult<bool>> CheckEmail(string email)
     {
