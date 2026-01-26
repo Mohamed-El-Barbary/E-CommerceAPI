@@ -1,6 +1,6 @@
 ﻿using E_Commerce.Domain.Entities.OrderModule;
 
-namespace E_Commerce.Services.Specifications;
+namespace E_Commerce.Services.Specifications.OrderSpecifications;
 
 internal class OrderSpecification : BaseSpecifications<Order, Guid>
 {
