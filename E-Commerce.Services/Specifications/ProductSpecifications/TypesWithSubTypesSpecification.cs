@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace E_Commerce.Services.Specifications
+namespace E_Commerce.Services.Specifications.ProductSpecifications
 {
     internal class TypesWithSubTypesSpecification : BaseSpecifications<ProductType, int>
     {

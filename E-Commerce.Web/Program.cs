@@ -7,6 +7,7 @@ using E_Commerce.Persistence.IdentityData.DbContexts;
 using E_Commerce.Persistence.Repositories;
 using E_Commerce.Services.MappingProfiles;
 using E_Commerce.Services.Services;
+using E_Commerce.Services.ServicesImplementation;
 using E_Commerce.Services_Abstraction;
 using E_Commerce.Web.CustomMiddleWares;
 using E_Commerce.Web.Extenions;
@@ -42,7 +43,7 @@ namespace E_Commerce.Web
                     "DevelopmentPolicy",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:4200")
+                        builder.WithOrigins("https://localhost:4200")
                                .AllowAnyHeader()
                                .AllowAnyMethod()
                                .AllowCredentials()
@@ -71,6 +72,7 @@ namespace E_Commerce.Web
             builder.Services.AddScoped<ICacheService, CacheService>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IPaymentService, PaymentService>();
             builder.Services.AddAutoMapper(typeof(ProductProfile).Assembly);
             builder.Services.AddSingleton<IConnectionMultiplexer>(SP =>
             {

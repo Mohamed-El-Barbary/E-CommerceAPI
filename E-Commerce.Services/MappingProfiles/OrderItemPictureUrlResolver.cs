@@ -16,14 +16,19 @@ public class OrderItemPictureUrlResolver : IValueResolver<OrderItem, OrderItemDT
 
     public string Resolve(OrderItem source, OrderItemDTO destination, string destMember, ResolutionContext context)
     {
-        if (string.IsNullOrWhiteSpace(source.Product.PictureUrl)) return string.Empty;
+
+        if (string.IsNullOrEmpty(source.Product.PictureUrl))
+            return string.Empty;
 
         if (source.Product.PictureUrl.StartsWith("http"))
             return source.Product.PictureUrl;
 
-        var baseUrl = _configuration.GetSection("URLs")["ApiUrl"];
-        if (string.IsNullOrEmpty(baseUrl)) return string.Empty;
+        var baseUrl = _configuration.GetSection("URLs")["BaseUrl"];
 
-        return $"{baseUrl}{source.Product.PictureUrl}" ;
+        if (string.IsNullOrEmpty(baseUrl))
+            return string.Empty;
+
+        var pictureUrl = $"{baseUrl}{source.Product.PictureUrl}";
+        return pictureUrl;
     }
 }

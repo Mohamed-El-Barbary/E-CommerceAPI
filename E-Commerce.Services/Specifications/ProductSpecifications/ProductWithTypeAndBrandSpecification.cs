@@ -1,7 +1,7 @@
 ﻿using E_Commerce.Domain.Entities.ProductModule;
 using E_Commerce.Shared;
 
-namespace E_Commerce.Services.Specifications;
+namespace E_Commerce.Services.Specifications.ProductSpecifications;
 
 internal class ProductWithTypeAndBrandSpecification : BaseSpecifications<Product, int>
 {
@@ -12,7 +12,7 @@ internal class ProductWithTypeAndBrandSpecification : BaseSpecifications<Product
         AddInclude(p => p.ProductSubType);
         AddInclude(p => p.ProductColors);
         AddInclude(p => p.ProductSizes);
-        AddInclude(p => p.ProductImages);
+        AddInclude(p => p.ProductImages!);
     }
 
     public ProductWithTypeAndBrandSpecification(ProductQueryparams queryParams) :
@@ -23,7 +23,7 @@ internal class ProductWithTypeAndBrandSpecification : BaseSpecifications<Product
         AddInclude(p => p.ProductSubType);
         AddInclude(p => p.ProductColors);
         AddInclude(p => p.ProductSizes);
-        AddInclude(p => p.ProductImages);
+        AddInclude(p => p.ProductImages!);
 
 
         switch (queryParams.Sort)

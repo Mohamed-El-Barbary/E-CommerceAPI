@@ -8,6 +8,7 @@
         public ICollection<OrderItemDTO> Items { get; init; } = [];
         public AddressDTO Address { get; init; } = default!;
         public string DeliveryMethod { get; init; } = default!;
+        public string PaymentIntentId { get; set; } = default!;
         public string OrderStatus { get; init; } = default!;
         public DateTimeOffset OrderDate { get; init; }
         public decimal SubTotal { get; init; }

@@ -7,6 +7,7 @@ using E_Commerce.Services_Abstraction;
 using E_Commerce.Services.Specifications;
 using E_Commerce.Shared.CommonResult;
 using E_Commerce.Shared.DTOs.OrderDTOs;
+using E_Commerce.Services.Specifications.OrderSpecifications;
 
 namespace E_Commerce.Services.Services;
 
@@ -31,6 +32,8 @@ public class OrderService : IOrderService
         if (basket is null)
             return Error.NotFound("Basket.NotFound", $"The Basket With Id {orderDto.BasketId} Is Not Found");
 
+        if (basket.PaymentIntentId is null) return Error.Validation("PaymentIntent.NotFound");
+
         List<OrderItem> orderItems = new List<OrderItem>();
         foreach (var item in basket.Items)
         {
@@ -48,6 +51,14 @@ public class OrderService : IOrderService
 
         var subTotal = orderItems.Sum(i => i.Price * i.Quantity);
 
+        var orderSpec = new OrderWithPaymentIntentSpecifications(basket.PaymentIntentId);
+        var OrderExistWithThisPaymentIntent = await _unitOfWork.GetRepository<Order, Guid>().GetByIdAsync(orderSpec);
+
+        if (OrderExistWithThisPaymentIntent is not null)
+        {
+            _unitOfWork.GetRepository<Order, Guid>().Delete(OrderExistWithThisPaymentIntent);
+        }
+
         var order = new Order()
         {
             Address = orderAddress,
@@ -55,7 +66,8 @@ public class OrderService : IOrderService
             Items = orderItems,
             SubTotal = subTotal,
             UserEmail = email,
-            Phone = orderDto.Phone
+            Phone = orderDto.Phone,
+            PaymentIntentId = basket.PaymentIntentId  
         };
 
         try
@@ -125,7 +137,8 @@ public class OrderService : IOrderService
             {
                 ProductId = product.Id,
                 ProductName = product.Name,
-                PictureUrl = product.PictureUrl
+                PictureUrl = product.PictureUrl,
+                Color = item.Color
             },
             Price = product.Price,
             Quantity = item.Quantity
