@@ -1,0 +1,102 @@
+﻿using System.Text.Json;
+using E_Commerce.Domain.Contracts;
+using E_Commerce.Domain.Entities;
+using E_Commerce.Domain.Entities.OrderModule;
+using E_Commerce.Domain.Entities.ProductModule;
+using E_Commerce.Persistence.Data.DbContexts;
+using Microsoft.EntityFrameworkCore;
+
+namespace E_Commerce.Persistence.Data.DataSeed;
+
+public class DataInitializer : IDataInitializer
+{
+    private readonly StoreDbContext _dbContext;
+
+    public DataInitializer(StoreDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
+    public async Task InitializeAsync()
+    {
+        try
+        {
+            var hasProduct = await _dbContext.Products.AnyAsync();
+            var hasProductBrands = await _dbContext.ProductBrands.AnyAsync();
+            var hasProductTypes = await _dbContext.ProductTypes.AnyAsync();
+            var hasDeliverMethod = await _dbContext.Set<DeliveryMethod>().AnyAsync();
+            var hasProductSubTypes = await _dbContext.Set<ProductSubType>().AnyAsync();
+            var hasProductSizes = await _dbContext.Set<ProductSize>().AnyAsync();
+            var hasProductColors = await _dbContext.Set<ProductColor>().AnyAsync();
+
+            if (hasProductTypes 
+                && hasProductBrands 
+                && hasProduct 
+                && hasDeliverMethod 
+                && hasProductSubTypes 
+                && hasProductColors 
+                && hasProductColors) return;
+
+            if (!hasProductBrands)
+                await SeedDataFromJsonAsync<ProductBrand, int>("brands.json", _dbContext.ProductBrands);
+
+            if (!hasProductTypes)
+                await SeedDataFromJsonAsync<ProductType, int>("types.json", _dbContext.ProductTypes);
+
+            await _dbContext.SaveChangesAsync();
+
+            if (!hasProductSubTypes)
+                await SeedDataFromJsonAsync<ProductSubType, int>("subTypes.json", _dbContext.Set<ProductSubType>());
+
+            await _dbContext.SaveChangesAsync();
+
+            if (!hasProduct)
+                await SeedDataFromJsonAsync<Product, int>("products.json", _dbContext.Products);
+
+            if (!hasDeliverMethod)
+                await SeedDataFromJsonAsync<DeliveryMethod, int>("delivery.json", _dbContext.Set<DeliveryMethod>());
+
+            await _dbContext.SaveChangesAsync();
+
+            if (!hasProductColors)
+                await SeedDataFromJsonAsync<ProductColor, int>("colors.json", _dbContext.Set<ProductColor>());
+
+            if (!hasProductSizes)
+                await SeedDataFromJsonAsync<ProductSize, int>("sizes.json", _dbContext.Set<ProductSize>());
+
+            await _dbContext.SaveChangesAsync();
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    private async Task SeedDataFromJsonAsync<T, TEntity>(string fileName, DbSet<T> dbSet) where T : BaseEntity<TEntity>
+    {
+        // D:\Route Bootcamp Back_End\API\E-CommerceAPI\E-CommerceSolution\E-Commerce.Persistence\Data\DataSeed\JSONFiles\brands.json
+        var filePath = @"..\E-Commerce.Persistence\Data\DataSeed\JSONFiles\" + fileName;
+
+        if (!File.Exists(filePath))
+            throw new FileNotFoundException($"File {fileName} is not Exist");
+
+        try
+        {
+            using var dataStream = File.OpenRead(filePath);
+            var data = await JsonSerializer.DeserializeAsync<List<T>>(dataStream, new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            if (data is not null)
+                await dbSet.AddRangeAsync(data);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error While Reading JSON File {e}");
+            return;
+        }
+    }
+}

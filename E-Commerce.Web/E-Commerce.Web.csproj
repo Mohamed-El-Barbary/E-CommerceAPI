@@ -8,12 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.22" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.8.22" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\E Commerce.Persistence\E Commerce.Persistence.csproj" />
-    <ProjectReference Include="..\E Commerce.Presentation\E Commerce.Presentation.csproj" />
+    <ProjectReference Include="..\E-Commerce.Persistence\E-Commerce.Persistence.csproj" />
+    <ProjectReference Include="..\E-Commerce.Presentation\E-Commerce.Presentation.csproj" />
   </ItemGroup>
 
 </Project>

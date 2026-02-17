@@ -1,0 +1,77 @@
+[
+  {
+    "Name": "T-Shirts",
+    "ProductTypeId": 1
+  },
+  {
+    "Name": "Shirts",
+    "ProductTypeId": 1
+  },
+  {
+    "Name": "Blouses",
+    "ProductTypeId": 1
+  },
+  {
+    "Name": "Tank Tops",
+    "ProductTypeId": 1
+  },
+
+  {
+    "Name": "Jeans",
+    "ProductTypeId": 2
+  },
+  {
+    "Name": "Trousers",
+    "ProductTypeId": 2
+  },
+  {
+    "Name": "Shorts",
+    "ProductTypeId": 2
+  },
+  {
+    "Name": "Skirts",
+    "ProductTypeId": 2
+  },
+
+  {
+    "Name": "Jackets",
+    "ProductTypeId": 3
+  },
+  {
+    "Name": "Coats",
+    "ProductTypeId": 3
+  },
+  {
+    "Name": "Dresses",
+    "ProductTypeId": 3
+  },
+  {
+    "Name": "Blazers",
+    "ProductTypeId": 3
+  },
+
+  {
+    "Name": "Shoes",
+    "ProductTypeId": 4
+  },
+  {
+    "Name": "Bags",
+    "ProductTypeId": 4
+  },
+  {
+    "Name": "Hats & Caps",
+    "ProductTypeId": 4
+  },
+  {
+    "Name": "Belts",
+    "ProductTypeId": 4
+  },
+  {
+    "Name": "Scarves",
+    "ProductTypeId": 4
+  },
+  {
+    "Name": "Jewelry",
+    "ProductTypeId": 4
+  }
+]

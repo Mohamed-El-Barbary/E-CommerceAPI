@@ -1,0 +1,166 @@
+[
+  {
+    "ProductId": 1,
+    "Size": "S"
+  },
+  {
+    "ProductId": 1,
+    "Size": "M"
+  },
+  {
+    "ProductId": 1,
+    "Size": "L"
+  },
+
+  {
+    "ProductId": 2,
+    "Size": "S"
+  },
+  {
+    "ProductId": 2,
+    "Size": "M"
+  },
+  {
+    "ProductId": 2,
+    "Size": "L"
+  },
+  {
+    "ProductId": 2,
+    "Size": "XL"
+  },
+
+  {
+    "ProductId": 3,
+    "Size": "M"
+  },
+  {
+    "ProductId": 3,
+    "Size": "L"
+  },
+  {
+    "ProductId": 3,
+    "Size": "XL"
+  },
+
+  {
+    "ProductId": 4,
+    "Size": "S"
+  },
+  {
+    "ProductId": 4,
+    "Size": "M"
+  },
+  {
+    "ProductId": 4,
+    "Size": "L"
+  },
+
+  {
+    "ProductId": 5,
+    "Size": "M"
+  },
+  {
+    "ProductId": 5,
+    "Size": "L"
+  },
+  {
+    "ProductId": 5,
+    "Size": "XL"
+  },
+
+  {
+    "ProductId": 6,
+    "Size": "S"
+  },
+  {
+    "ProductId": 6,
+    "Size": "M"
+  },
+  {
+    "ProductId": 6,
+    "Size": "L"
+  },
+
+  {
+    "ProductId": 7,
+    "Size": "M"
+  },
+  {
+    "ProductId": 7,
+    "Size": "L"
+  },
+  {
+    "ProductId": 7,
+    "Size": "XL"
+  },
+
+  {
+    "ProductId": 8,
+    "Size": "40"
+  },
+  {
+    "ProductId": 8,
+    "Size": "41"
+  },
+  {
+    "ProductId": 8,
+    "Size": "42"
+  },
+
+  {
+    "ProductId": 9,
+    "Size": "S"
+  },
+  {
+    "ProductId": 9,
+    "Size": "M"
+  },
+  {
+    "ProductId": 9,
+    "Size": "L"
+  },
+
+  {
+    "ProductId": 10,
+    "Size": "M"
+  },
+  {
+    "ProductId": 10,
+    "Size": "L"
+  },
+  {
+    "ProductId": 10,
+    "Size": "XL"
+  },
+
+  {
+    "ProductId": 11,
+    "Size": "S"
+  },
+  {
+    "ProductId": 11,
+    "Size": "M"
+  },
+  {
+    "ProductId": 11,
+    "Size": "L"
+  },
+
+  {
+    "ProductId": 12,
+    "Size": "M"
+  },
+  {
+    "ProductId": 12,
+    "Size": "L"
+  },
+  {
+    "ProductId": 12,
+    "Size": "XL"
+  },
+
+  {
+    "ProductId": 13,
+    "Size": "One Size"
+  }
+]
